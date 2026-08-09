@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checklist de Documentos para Ajuizamento — Felipe Albuquerque Advocacia</title>
+<style>
+  :root{
+    --navy:#1b2a4a; --navy-2:#24365c; --gold:#b0893c;
+    --ink:#1f2733; --muted:#5b6675; --line:#e4e7ec; --line-2:#eef1f5;
+    --bg:#f4f6f9; --card:#ffffff;
+    --obrig:#b3261e; --obrig-bg:#fdeceb;
+    --recom:#8a6a1f; --recom-bg:#fbf3df;
+    --aplic:#5b6675; --aplic-bg:#eef1f5;
+    --ok:#1f7a4d; --ok-bg:#e7f4ec;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.06);
+    --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --serif:Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:var(--font);color:var(--ink);background:var(--bg);
+    line-height:1.5;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:24px 20px 80px}
+
+  /* ---------- Cabeçalho ---------- */
+  .masthead{
+    background:linear-gradient(180deg,var(--navy),var(--navy-2));
+    color:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .masthead .top{
+    display:flex;align-items:center;gap:14px;padding:20px 26px 6px;
+  }
+  .clearTop{
+    margin-left:auto;font-family:inherit;font-size:12.5px;font-weight:600;color:#e7ecf6;
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.28);
+    padding:7px 14px;border-radius:20px;cursor:pointer;white-space:nowrap;transition:.15s;
+  }
+  .clearTop:hover{background:rgba(255,255,255,.18);border-color:var(--gold);color:#fff}
+  .monogram{
+    width:46px;height:46px;flex:0 0 auto;border:1.5px solid var(--gold);border-radius:9px;
+    display:flex;align-items:center;justify-content:center;font-family:var(--serif);
+    font-weight:700;letter-spacing:1px;color:var(--gold);font-size:18px;
+  }
+  .firm{font-family:var(--serif);letter-spacing:.5px}
+  .firm .name{font-size:15px;font-weight:700;text-transform:uppercase}
+  .firm .oab{font-size:11.5px;color:#c3cbdb;letter-spacing:.4px}
+  .masthead h1{
+    margin:0;padding:2px 26px 4px;font-size:20px;font-weight:700;letter-spacing:.2px;
+  }
+  .masthead .sub{
+    padding:0 26px 14px;color:#cfd6e6;font-size:13.5px;max-width:640px;
+  }
+  .regime-pill{
+    display:inline-block;margin:0 26px 20px;font-size:11.5px;font-weight:700;letter-spacing:.4px;
+    color:#0f1a30;background:var(--gold);padding:4px 12px;border-radius:20px;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .goldbar{height:4px;background:var(--gold);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+
+  /* ---------- Seletor de credor ---------- */
+  .credor-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .credor{
+    text-align:left;cursor:pointer;background:#fff;border:1.5px solid var(--line);border-radius:12px;
+    padding:14px 16px;transition:.15s;font-family:inherit;display:flex;gap:12px;align-items:flex-start;
+  }
+  .credor:hover{border-color:var(--navy)}
+  .credor.active{border-color:var(--navy);background:#f7f9fc;box-shadow:0 0 0 3px rgba(27,42,74,.10)}
+  .credor .dot{width:18px;height:18px;border-radius:50%;border:2px solid #b8c0cd;flex:0 0 auto;margin-top:1px;position:relative}
+  .credor.active .dot{border-color:var(--navy)}
+  .credor.active .dot::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--navy)}
+  .credor .t{display:block;font-size:14.5px;font-weight:700;color:var(--ink)}
+  .credor .d{display:block;font-size:12.5px;color:var(--muted);margin-top:3px}
+
+  /* ---------- Como funciona ---------- */
+  .howto{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:18px 22px;margin-top:18px;
+  }
+  .howto h2{margin:0 0 12px;font-size:13px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted)}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .step{display:flex;gap:11px;align-items:flex-start}
+  .step .n{
+    flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .step p{margin:0;font-size:13.5px}
+  .step b{display:block;font-size:13.5px;margin-bottom:1px}
+
+  /* ---------- Identificação ---------- */
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:20px 22px;margin-top:18px;
+  }
+  .card > h2.block{
+    margin:0 0 14px;font-size:13px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);
+  }
+  .grid-id{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px;font-weight:600}
+  .field input{
+    width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+    font-family:inherit;font-size:14px;color:var(--ink);background:#fff;
+  }
+  .field input:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(27,42,74,.10)}
+
+  /* ---------- Seletor de ação ---------- */
+  .pick-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .pick{
+    text-align:left;cursor:pointer;background:#fff;border:1.5px solid var(--line);
+    border-radius:12px;padding:15px 16px;transition:.15s;font-family:inherit;
+    display:flex;gap:13px;align-items:flex-start;
+  }
+  .pick:hover{border-color:var(--navy);box-shadow:0 4px 14px rgba(16,24,40,.08)}
+  .pick.active{border-color:var(--navy);background:#f7f9fc;box-shadow:0 0 0 3px rgba(27,42,74,.10)}
+  .pick .ico{font-size:22px;line-height:1;margin-top:1px}
+  .pick > span:last-child{display:block}
+  .pick .t{display:block;font-size:14.5px;font-weight:700;color:var(--ink)}
+  .pick .d{display:block;font-size:12.5px;color:var(--muted);margin-top:3px}
+
+  /* ---------- Barra de progresso (sticky) ---------- */
+  #progressWrap{position:sticky;top:0;z-index:20;margin-top:18px}
+  .progress{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:14px 18px;
+  }
+  .progress .row1{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .progress .lead{font-size:14px;font-weight:700}
+  .counters{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{font-size:12px;font-weight:600;padding:4px 10px;border-radius:20px;border:1px solid var(--line)}
+  .chip b{font-weight:700}
+  .chip.obrig{background:var(--obrig-bg);color:var(--obrig);border-color:transparent}
+  .chip.done{background:var(--ok-bg);color:var(--ok);border-color:transparent}
+  .bar{height:9px;background:var(--line-2);border-radius:20px;margin-top:11px;overflow:hidden}
+  .bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),#caa04e);
+    border-radius:20px;transition:width .25s;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .alert{
+    margin-top:11px;font-size:13px;background:var(--obrig-bg);color:#7a1a15;border-radius:9px;
+    padding:9px 12px;display:none;-webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .alert.show{display:block}
+  .alert.ok{background:var(--ok-bg);color:#155e3a}
+  .toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+  .toggle{
+    font-size:12.5px;font-weight:600;color:var(--muted);background:#fff;border:1px solid var(--line);
+    padding:6px 12px;border-radius:20px;cursor:pointer;font-family:inherit;
+  }
+  .toggle.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+  /* ---------- Motivo (regresso) ---------- */
+  .motivos{margin-top:18px;display:none}
+  .motivos.show{display:block}
+  .motivos .mtitle{font-size:13px;font-weight:700;margin-bottom:10px}
+  .mopts{display:flex;gap:10px;flex-wrap:wrap}
+  .mopt{
+    display:flex;gap:9px;align-items:center;border:1.5px solid var(--line);border-radius:10px;
+    padding:9px 13px;cursor:pointer;font-size:13.5px;background:#fff;
+  }
+  .mopt.on{border-color:var(--navy);background:#f7f9fc}
+  .mopt .box{width:18px;height:18px;border:1.5px solid var(--muted);border-radius:5px;flex:0 0 auto;position:relative}
+  .mopt.on .box{background:var(--navy);border-color:var(--navy)}
+  .mopt.on .box::after{content:"";position:absolute;left:5px;top:1.5px;width:5px;height:9px;
+    border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+  .mopt.base{opacity:.7;cursor:default}
+
+  /* ---------- Checklist ---------- */
+  #list{margin-top:6px}
+  .section{margin-top:22px}
+  .section > h3{
+    font-size:14px;margin:0 0 3px;color:var(--navy);font-weight:700;
+    display:flex;align-items:center;gap:9px;
+  }
+  .section > h3 .num{
+    font-size:12px;background:var(--navy);color:#fff;width:22px;height:22px;border-radius:6px;
+    display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .section > .stip{font-size:12px;color:var(--muted);margin:0 0 10px 31px;font-style:italic}
+  .section .goldline{height:2px;background:var(--gold);border-radius:2px;margin:0 0 4px 31px;opacity:.5;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact}
+
+  .item{
+    display:flex;gap:13px;align-items:flex-start;padding:12px 6px 12px 8px;
+    border-bottom:1px solid var(--line-2);
+  }
+  .item:last-child{border-bottom:none}
+  .item.hide{display:none}
+  .ckbox{
+    flex:0 0 auto;width:22px;height:22px;border:1.8px solid #b8c0cd;border-radius:6px;margin-top:2px;
+    cursor:pointer;position:relative;background:#fff;transition:.12s;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .ckbox:hover{border-color:var(--navy)}
+  .item.checked .ckbox{background:var(--ok);border-color:var(--ok)}
+  .item.checked .ckbox::after{content:"";position:absolute;left:7px;top:3px;width:5px;height:10px;
+    border:solid #fff;border-width:0 2.2px 2.2px 0;transform:rotate(45deg)}
+  .item .body{flex:1 1 auto;min-width:0}
+  .item .head{display:flex;gap:9px;align-items:baseline;flex-wrap:wrap}
+  .item .name{font-size:14px;font-weight:600;color:var(--ink)}
+  .item.checked .name{color:var(--muted)}
+  .item .desc{font-size:12.8px;color:var(--muted);margin-top:3px}
+  .item .tip{font-size:12.2px;color:#7a5a12;background:var(--recom-bg);border-radius:7px;
+    padding:6px 10px;margin-top:7px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .item .tip b{color:#5f4708}
+
+  .badge{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+    padding:2px 8px;border-radius:20px;white-space:nowrap;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .badge.obrig{background:var(--obrig-bg);color:var(--obrig)}
+  .badge.recom{background:var(--recom-bg);color:var(--recom)}
+  .badge.aplic{background:var(--aplic-bg);color:var(--aplic)}
+
+  /* ---------- Observações ---------- */
+  #notasCard textarea{
+    width:100%;min-height:90px;padding:11px 12px;border:1px solid var(--line);border-radius:9px;
+    font-family:inherit;font-size:13.5px;resize:vertical;color:var(--ink);
+  }
+  #notasCard textarea:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(27,42,74,.10)}
+
+  /* ---------- Ações ---------- */
+  .actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:22px}
+  .btn{font-family:inherit;font-size:14px;font-weight:600;padding:11px 20px;border-radius:10px;
+    cursor:pointer;border:1px solid transparent}
+  .btn.primary{background:var(--navy);color:#fff}
+  .btn.primary:hover{background:#16233d}
+  .btn.ghost{background:#fff;color:var(--navy);border-color:var(--line)}
+  .btn.ghost:hover{border-color:var(--navy)}
+
+  .empty{padding:34px 20px;text-align:center;color:var(--muted);font-size:14px}
+
+  footer.doc{
+    margin-top:30px;padding-top:18px;border-top:1px solid var(--line);
+    text-align:center;color:var(--muted);font-size:12px;line-height:1.7;
+  }
+  footer.doc b{color:var(--ink)}
+
+  .hint-save{font-size:11.5px;color:var(--muted);margin-top:8px;text-align:center}
+
+  /* ---------- Diálogo (confirmar/avisar) ---------- */
+  .modal-bg{position:fixed;inset:0;background:rgba(15,23,42,.5);display:none;
+    align-items:center;justify-content:center;z-index:200;padding:20px;}
+  .modal-bg.show{display:flex;}
+  .modal{background:#fff;border-radius:14px;max-width:380px;width:100%;padding:22px 22px 18px;
+    box-shadow:0 20px 55px rgba(0,0,0,.28);}
+  .modal p{margin:0 0 18px;font-size:14px;line-height:1.5;color:var(--ink);}
+  .modal .btns{display:flex;gap:10px;justify-content:flex-end;}
+  .modal button{font-family:inherit;font-size:13.5px;font-weight:600;padding:9px 16px;
+    border-radius:9px;cursor:pointer;border:1px solid var(--line);}
+  .modal .myes{background:var(--navy);color:#fff;border-color:transparent;}
+  .modal .mno{background:#fff;color:var(--muted);}
+
+  /* ---------- Impressão / PDF ---------- */
+  @media print{
+    @page{margin:14mm}
+    body{background:#fff}
+    .wrap{max-width:none;padding:0}
+    .howto,.pick-grid,.toolbar,.actions,#progressWrap .toggle,.hint-save,.no-print{display:none !important}
+    .pickCard{display:none !important}
+    .card,.masthead,.progress{box-shadow:none;border-color:#d0d5dd}
+    #progressWrap{position:static}
+    .item.hide{display:none !important}
+    .item{break-inside:avoid}
+    .section{break-inside:avoid}
+    .alert{display:none !important}
+  }
+  @media (max-width:640px){
+    .steps,.grid-id,.pick-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- CABEÇALHO -->
+  <div class="masthead">
+    <div class="top">
+      <div class="monogram">F|A</div>
+      <div class="firm">
+        <div class="name">Felipe Albuquerque Advocacia</div>
+        <div class="oab">OAB/SC 33.415</div>
+      </div>
+      <button class="clearTop no-print" id="btnClearTop" title="Apagar tudo e começar um novo caso">↺ Recomeçar</button>
+    </div>
+    <h1>Checklist de Documentos para Ajuizamento</h1>
+    <div class="sub">Reúna os documentos abaixo para que a ação seja proposta com segurança e sem atrasos. Marque cada item conforme for separando — no fim, salve em PDF e devolva ao escritório.</div>
+    <div class="regime-pill" id="regimePill">Credor: Securitizadora / FIDC</div>
+    <div class="goldbar"></div>
+  </div>
+
+  <!-- COMO FUNCIONA -->
+  <div class="howto no-print">
+    <h2>Como usar este checklist</h2>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><p><b>Identifique o caso</b>Preencha os dados abaixo para sabermos a quem se refere.</p></div>
+      <div class="step"><div class="n">2</div><p><b>Escolha o tipo de cobrança</b>Selecione o cartão que corresponde ao seu caso; aparecerão só os documentos daquele tipo.</p></div>
+      <div class="step"><div class="n">3</div><p><b>Marque e devolva</b>Marque o que já tem, clique em <i>Salvar / Imprimir em PDF</i> e envie para o escritório.</p></div>
+    </div>
+  </div>
+
+  <!-- IDENTIFICAÇÃO -->
+  <div class="card">
+    <h2 class="block">Identificação do caso</h2>
+    <div class="grid-id">
+      <div class="field"><label>Cliente (securitizadora / FIDC / factoring)</label><input id="id_cliente" data-id="cliente" placeholder="Ex.: XYZ Securitizadora S.A."></div>
+      <div class="field"><label>Quem executar / cobrar</label><input id="id_ref" data-id="ref" placeholder="Ex.: Sacado João da Silva / Operação 1234"></div>
+      <div class="field"><label>Responsável pelo envio</label><input id="id_contato" data-id="contato" placeholder="Nome / e-mail / telefone"></div>
+      <div class="field"><label>Data</label><input id="id_data" data-id="data" placeholder="dd/mm/aaaa"></div>
+    </div>
+  </div>
+
+  <!-- SELETOR DE CREDOR -->
+  <div class="card pickCard">
+    <h2 class="block">Natureza do credor</h2>
+    <div class="credor-grid" id="credorGrid"></div>
+  </div>
+
+  <!-- SELETOR DE AÇÃO -->
+  <div class="card pickCard">
+    <h2 class="block">Qual é o tipo de cobrança?</h2>
+    <div class="pick-grid" id="pickGrid"></div>
+  </div>
+
+  <!-- MOTIVO (só regresso) -->
+  <div class="motivos card" id="motivosCard">
+    <div class="mtitle">Por que o regresso está sendo exercido? <span style="font-weight:400;color:var(--muted)">(pode marcar mais de um)</span></div>
+    <div class="mopts" id="mopts"></div>
+  </div>
+
+  <!-- PROGRESSO -->
+  <div id="progressWrap" style="display:none">
+    <div class="progress">
+      <div class="row1">
+        <div class="lead" id="progLead">Documentos</div>
+        <div class="counters">
+          <span class="chip obrig" id="chipObrig">Obrigatórios: <b>0/0</b></span>
+          <span class="chip done" id="chipDone">Separados: <b>0/0</b></span>
+        </div>
+      </div>
+      <div class="bar"><i id="barFill"></i></div>
+      <div class="alert" id="alertBox"></div>
+      <div class="toolbar no-print">
+        <button class="toggle" id="tgPend">Ver só o que falta</button>
+        <button class="toggle" id="tgObrig">Ver só obrigatórios</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LISTA -->
+  <div id="list">
+    <div class="empty">Selecione o tipo de cobrança acima para ver os documentos necessários.</div>
+  </div>
+
+  <!-- OBSERVAÇÕES -->
+  <div class="card" id="notasCard" style="display:none">
+    <h2 class="block">Observações para o escritório</h2>
+    <textarea id="notas" placeholder="Ex.: o cheque original está com o cedente; a nota fiscal será enviada até sexta; há garantidor além do devedor principal..."></textarea>
+  </div>
+
+  <!-- AÇÕES -->
+  <div class="actions no-print" id="actions" style="display:none">
+    <button class="btn primary" id="btnPrint">Salvar / Imprimir em PDF</button>
+    <button class="btn ghost" id="btnReset">Limpar tudo</button>
+  </div>
+  <div class="hint-save no-print" id="hintSave">Suas marcações ficam salvas automaticamente neste computador. Para gerar o PDF, clique em “Salvar / Imprimir em PDF” e escolha <b>Salvar como PDF</b> na janela de impressão.</div>
+
+  <!-- DIÁLOGO -->
+  <div class="modal-bg no-print" id="modalBg">
+    <div class="modal" role="dialog" aria-modal="true">
+      <p id="modalMsg"></p>
+      <div class="btns">
+        <button class="mno" id="modalNo">Cancelar</button>
+        <button class="myes" id="modalYes">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="doc">
+    <b>Felipe Albuquerque Advocacia</b> — OAB/SC 33.415<br>
+    Fone/WhatsApp: (48) 3056-0800 &nbsp;·&nbsp; felipe@felipeadv.com.br
+  </footer>
+</div>
+
+<script>
+/* ============================ DADOS ============================ */
+const LEVELS = {
+  obrig:{cls:"obrig",label:"Obrigatório"},
+  recom:{cls:"recom",label:"Recomendado"},
+  aplic:{cls:"aplic",label:"Se aplicável"}
+};
+
+const CESSAO_BASE = {
+  id:"cessao", num:1, title:"Documentos da operação de cessão",
+  tip:"Provam que o crédito foi adquirido do cedente pela securitizadora/FIDC.",
+  items:[
+    {id:"contrato", n:"Contrato de cessão de crédito", lvl:"obrig",
+     d:"Contrato que transferiu o crédito do cedente (empresa que originou o título) para a securitizadora/FIDC."},
+    {id:"aditivos", n:"Termos aditivos ao contrato-mãe", lvl:"obrig",
+     d:"Aditivos que alteraram o contrato principal. Também precisam estar assinados por duas testemunhas."},
+    {id:"pgto", n:"Comprovante de pagamento ao cedente (TED/boleto)", lvl:"obrig",
+     d:"Comprovante de que a securitizadora/FIDC efetivamente pagou pelo crédito adquirido."}
+  ]
+};
+
+const DATA = {
+  cheque:{
+    label:"Cobrança de cheque", ico:"🧾",
+    when:"Você tem o cheque em papel devolvido pelo banco.",
+    sections:[
+      { ...CESSAO_BASE,
+        items:[
+          CESSAO_BASE.items[0],
+          CESSAO_BASE.items[1],
+          {id:"notif", n:"Notificação do devedor sobre a cessão", lvl:"recom",
+           d:"Prova de que o emitente do cheque foi avisado de que a dívida passou para a securitizadora/FIDC (art. 290 do Código Civil)."},
+          CESSAO_BASE.items[2]
+        ]
+      },
+      { id:"cheque", num:2, title:"Documentos do cheque", tip:"O título em si e a prova da recusa de pagamento.",
+        items:[
+          {id:"original", n:"Cheque original (via física)", lvl:"obrig",
+           d:"A posse do cheque em papel é indispensável.",
+           tip:"<b>Atenção ao prazo:</b> para execução, o cheque deve estar dentro do prazo (cerca de 6 meses após o fim do prazo de apresentação). Se já passou, ainda é possível cobrar por ação monitória — envie assim mesmo."},
+          {id:"devolucao", n:"Comprovante de devolução pelo banco (alínea)", lvl:"obrig",
+           d:"Documento do banco com o motivo da recusa — alínea 11 (sem fundos), 12 (conta encerrada), 13 (conta inexistente), 21 (contraordem), etc."},
+          {id:"endosso", n:"Endosso no verso do cheque", lvl:"obrig",
+           d:"Carimbo ou assinatura no verso mostrando que o cheque foi transferido até a securitizadora/FIDC."},
+          {id:"protesto", n:"Instrumento de protesto", lvl:"recom",
+           d:"Certidão de protesto do cheque. Reforça a mora e é necessária para cobrar endossantes."}
+        ]
+      },
+      COMPL("titulos")
+    ]
+  },
+
+  duplicata:{
+    label:"Cobrança de duplicata", ico:"📄",
+    when:"O crédito vem de duplicata (mercantil ou de serviço) ligada a uma nota fiscal.",
+    sections:[
+      { ...CESSAO_BASE,
+        items:[ CESSAO_BASE.items[0], CESSAO_BASE.items[1],
+          {id:"pgto", n:"Comprovante de pagamento ao cedente (TED/boleto)", lvl:"recom",
+           d:"Comprovante de que a securitizadora/FIDC pagou pelo crédito adquirido."} ]
+      },
+      { id:"dup", num:2, title:"Documentos da duplicata", tip:"Provam o crédito e a entrega da mercadoria/serviço.",
+        items:[
+          {id:"copia", n:"Cópia das duplicatas", lvl:"obrig",
+           d:"Cópia das duplicatas. Se for duplicata virtual, envie o boleto bancário correspondente."},
+          {id:"nf", n:"Notas fiscais correspondentes (NF-e / NFS-e)", lvl:"obrig",
+           d:"Notas fiscais que deram origem às duplicatas — comprovam de onde vem a dívida."},
+          {id:"entrega", n:"Comprovante de entrega / canhoto assinado", lvl:"obrig",
+           d:"Canhoto da nota assinado por quem recebeu, DACTE/CT-e, AR dos Correios ou equivalente.",
+           tip:"<b>Indispensável</b> quando a duplicata <b>não tem aceite</b> do sacado. É o que prova que a mercadoria/serviço foi entregue."},
+          {id:"protesto", n:"Instrumento de protesto", lvl:"obrig",
+           d:"Certidão de protesto da duplicata. Para duplicata virtual, o protesto por indicação é suficiente (Súmula 248 do STJ)."},
+          {id:"aceite", n:"Aceite do sacado", lvl:"aplic",
+           d:"Se a duplicata tiver aceite assinado do sacado, ele dispensa o comprovante de entrega e o protesto para fins de execução."}
+        ]
+      },
+      { id:"compl", num:3, title:"Documentos complementares", tip:"Reforçam a instrução do processo.",
+        items:[
+          {id:"emails", n:"E-mails / mensagens de confirmação ou recusa dos títulos", lvl:"recom",
+           d:"Comunicações que mostrem ciência, aceitação ou recusa dos títulos pelo sacado."},
+          DEMO(), COBR(), LEGIT("titulos")
+        ]
+      }
+    ]
+  },
+
+  regresso:{
+    label:"Regresso contra o cedente", ico:"↩️",
+    when:"O sacado não pagou, os títulos não têm lastro ou houve devolução de mercadorias, e você cobra o cedente (coobrigação).",
+    motivos:true,
+    sections:[
+      { id:"contrato", num:1, title:"Contrato-mãe e aditivos", tip:"É o título executivo — a base da ação de regresso.",
+        items:[
+          {id:"contrato", n:"Contrato-mãe / cessão com cláusula de regresso", lvl:"obrig",
+           d:"Contrato principal com a cláusula de coobrigação/regresso expressa, assinado pelo cedente e por duas testemunhas (art. 784, III, do CPC)."},
+          {id:"aditivos", n:"Termos aditivos ao contrato-mãe", lvl:"obrig",
+           d:"Aditivos que alteraram o contrato principal. Também precisam de duas testemunhas."}
+        ]
+      },
+      { id:"operacoes", num:2, title:"Documentação das operações", tip:"Comprova os créditos objeto do regresso.",
+        items:[
+          {id:"bordero", n:"Borderôs / termos de cessão das operações", lvl:"obrig",
+           d:"Documentos que listam os títulos negociados em cada operação, com valores, datas e sacados."},
+          {id:"titulos", n:"Cópia dos títulos inadimplidos (duplicatas / cheques)", lvl:"obrig",
+           d:"Cópia dos títulos que o sacado não pagou e que deram causa ao regresso."},
+          {id:"nf", n:"Notas fiscais correspondentes aos títulos", lvl:"recom",
+           d:"NF-e / NFS-e que deram origem aos títulos inadimplidos."},
+          {id:"entrega", n:"Comprovantes de entrega / canhotos", lvl:"recom",
+           d:"Documentos que comprovam a entrega das mercadorias ou a prestação dos serviços."}
+        ]
+      },
+      { id:"prova", num:3, title:"Prova da inadimplência e do regresso", tip:"Demonstram o direito de cobrar o cedente.",
+        items:[
+          {id:"inad", n:"Prova da inadimplência do sacado", lvl:"obrig",
+           d:"Protesto dos títulos, comprovante de devolução de cheque ou cobrança ao sacado sem resposta."},
+          {id:"notif", n:"Notificação ao cedente sobre o exercício do regresso", lvl:"recom",
+           d:"Comunicação formal avisando o cedente da inadimplência do sacado e do regresso."},
+          {id:"pgtoOrig", n:"Comprovante de pagamento ao cedente na operação original", lvl:"recom",
+           d:"TED/boleto mostrando que a securitizadora/FIDC pagou ao cedente pelos créditos."}
+        ]
+      },
+      { id:"lastro", num:4, title:"Títulos sem lastro", motivo:"lastro",
+        tip:"Só se aplica quando os títulos são simulados/inexistentes.",
+        items:[
+          {id:"declara", n:"Declaração do sacado negando a operação", lvl:"obrig",
+           d:"E-mail, carta ou notificação do sacado dizendo que não comprou, não recebeu mercadoria ou não contratou o serviço."},
+          {id:"consulta", n:"Consulta ao sacado sobre a existência da operação", lvl:"recom",
+           d:"Registro de contato (e-mail, WhatsApp, telefone) em que o sacado nega ou desconhece a operação."},
+          {id:"bo", n:"Boletim de ocorrência (se houver fraude)", lvl:"aplic",
+           d:"B.O. relatando a emissão de duplicatas simuladas."},
+          {id:"nfcancel", n:"Prova de nota fiscal cancelada ou inidônea", lvl:"aplic",
+           d:"Consulta à SEFAZ mostrando cancelamento, inutilização ou irregularidade da NF-e."}
+        ]
+      },
+      { id:"devol", num:5, title:"Mercadorias devolvidas", motivo:"devolucao",
+        tip:"Só se aplica quando houve devolução das mercadorias.",
+        items:[
+          {id:"nfdev", n:"Nota fiscal de devolução emitida pelo sacado", lvl:"obrig",
+           d:"NF-e de devolução comprovando a devolução total ou parcial das mercadorias."},
+          {id:"recdev", n:"Comprovante de recebimento da devolução pelo cedente", lvl:"recom",
+           d:"Canhoto, protocolo ou documento mostrando que o cedente recebeu as mercadorias de volta."},
+          {id:"comdev", n:"Comunicação do sacado informando a devolução", lvl:"recom",
+           d:"E-mail, carta ou notificação do sacado avisando que devolveu as mercadorias ao cedente."},
+          {id:"laudo", n:"Relatório de conferência / laudo de avaria", lvl:"aplic",
+           d:"Se a devolução foi por defeito, documento que comprove o vício ou a não conformidade do produto."},
+          {id:"naosubst", n:"Prova de que o cedente não substituiu os títulos nem devolveu os valores", lvl:"recom",
+           d:"Comunicações ou extratos mostrando que o cedente foi cobrado a substituir os títulos e não o fez."}
+        ]
+      },
+      { id:"compl", num:6, title:"Documentos complementares", tip:"Reforçam a instrução do processo.",
+        items:[ DEMO(),
+          {id:"emails", n:"E-mails / mensagens entre as partes", lvl:"recom",
+           d:"Comunicações que comprovem a relação comercial, a ciência da operação e as tentativas de resolução."},
+          LEGIT("titulosop") ]
+      }
+    ]
+  },
+
+  confissao:{
+    label:"Confissão de dívida", ico:"✍️",
+    when:"Existe um instrumento em que o devedor reconhece a dívida e se compromete a pagar.",
+    sections:[
+      { id:"instr", num:1, title:"Instrumento de confissão de dívida", tip:"É o título executivo — a base da execução.",
+        items:[
+          {id:"confissao", n:"Instrumento de confissão de dívida (original ou cópia autenticada)", lvl:"obrig",
+           d:"Documento em que o devedor reconhece a dívida, com valor, condições e vencimento.",
+           tip:"<b>Precisa estar assinado por duas testemunhas</b> para ter força de título executivo (art. 784, III, do CPC)."},
+          {id:"adit", n:"Termos aditivos à confissão de dívida", lvl:"aplic",
+           d:"Aditivos que alteraram valor, prazo, condições ou garantias. Também precisam de duas testemunhas."},
+          {id:"nova", n:"Termo de renegociação / novação", lvl:"aplic",
+           d:"Se a dívida original foi renegociada com a emissão de um novo instrumento."}
+        ]
+      },
+      { id:"origem", num:2, title:"Origem da dívida", tip:"Mostram de onde veio a dívida confessada.",
+        items:[
+          {id:"contrato", n:"Contrato-mãe / contrato de cessão original", lvl:"obrig",
+           d:"Contrato que deu origem à relação comercial (cessão de créditos, fomento mercantil, etc.)."},
+          {id:"aditivos", n:"Termos aditivos ao contrato-mãe (com 2 testemunhas)", lvl:"obrig",
+           d:"Aditivos que alteraram o contrato principal."},
+          {id:"bordero", n:"Borderôs / termos de cessão das operações que originaram a dívida", lvl:"obrig",
+           d:"Documentos que listam os títulos que deram origem ao débito confessado."},
+          {id:"titulos", n:"Cópia dos títulos inadimplidos que originaram a confissão", lvl:"obrig",
+           d:"Duplicatas, cheques ou outros títulos cujo não pagamento levou à confissão."},
+          {id:"compdebito", n:"Demonstrativo da composição do débito confessado", lvl:"recom",
+           d:"Documento que mostra como se chegou ao valor total confessado (principal + juros + encargos)."}
+        ]
+      },
+      { id:"garantias", num:3, title:"Garantias vinculadas", tip:"Só se houver garantias prestadas na confissão.",
+        items:[
+          {id:"aval", n:"Termo de aval / fiança", lvl:"aplic",
+           d:"Garantia prestada por terceiro para o pagamento da dívida confessada."},
+          {id:"np", n:"Nota promissória vinculada à confissão", lvl:"aplic",
+           d:"Nota promissória emitida como garantia adicional."},
+          {id:"real", n:"Contrato de alienação fiduciária / penhor / hipoteca", lvl:"aplic",
+           d:"Garantia real vinculada à confissão, com registro no cartório competente."},
+          {id:"certreg", n:"Certidão de registro da garantia real", lvl:"aplic",
+           d:"Certidão do cartório de imóveis, DETRAN ou títulos e documentos comprovando o registro."}
+        ]
+      },
+      { id:"inadimpl", num:4, title:"Prova do inadimplemento", tip:"Demonstram o descumprimento da confissão.",
+        items:[
+          {id:"parcelas", n:"Demonstrativo de parcelas inadimplidas", lvl:"obrig",
+           d:"Relação das parcelas vencidas e não pagas, com datas e valores."},
+          {id:"notif", n:"Notificação / interpelação ao devedor", lvl:"recom",
+           d:"Comunicação formal constituindo o devedor em mora. Indispensável se a confissão não previr mora automática."},
+          {id:"protesto", n:"Comprovante de protesto da confissão de dívida", lvl:"aplic",
+           d:"Certidão de protesto do instrumento de confissão, se realizado."},
+          {id:"parciais", n:"Extratos / comprovantes de pagamentos parciais", lvl:"aplic",
+           d:"Se houve pagamentos parciais, extratos mostrando o que já foi quitado e o saldo restante."}
+        ]
+      },
+      { id:"compl", num:5, title:"Documentos complementares", tip:"Reforçam a instrução do processo.",
+        items:[ DEMO(),
+          {id:"emails", n:"E-mails / mensagens entre as partes", lvl:"recom",
+           d:"Comunicações que comprovem a relação comercial, a ciência da dívida e as tentativas de cobrança."},
+          LEGIT("divida") ]
+      }
+    ]
+  }
+};
+
+/* Itens reutilizados */
+function DEMO(){return {id:"demo", n:"Posição atual do débito — o que está pago e o que está em aberto", lvl:"obrig",
+  d:"Planilha com valor principal, juros, multa e correção monetária, indicando o que já foi pago e o saldo em aberto, com a memória de cálculo."};}
+function COBR(){return {id:"cobranca", n:"Comunicações e tentativas de cobrança extrajudicial", lvl:"recom",
+  d:"E-mails, WhatsApp, cartas ou notificações extrajudiciais enviadas ao devedor."};}
+function LEGIT(kind){return {id:"legit", n:"Documentação que comprove a legitimidade "+(kind==="divida"?"da dívida":"dos títulos"), lvl:"aplic",
+  d:"Pedidos de compra, ordens de serviço, contratos comerciais, orçamentos aprovados e outros documentos pertinentes."};}
+function COMPL(kind){return {id:"compl", num:3, title:"Documentos complementares", tip:"Reforçam a instrução do processo.",
+  items:[ DEMO(), COBR(), LEGIT(kind) ]};}
+
+const MOTIVOS = [
+  {id:"inad", label:"Sacado não pagou (inadimplência)", base:true},
+  {id:"lastro", label:"Títulos sem lastro / simulados"},
+  {id:"devolucao", label:"Mercadorias devolvidas"}
+];
+
+const CREDORES = [
+  {id:"sec", t:"Securitizadora / FIDC", d:"Crédito adquirido por securitizadora (com CNPJ) ou por fundo (FIDC) via cessão de crédito.", label:"Securitizadora / FIDC"},
+  {id:"fac", t:"Factoring / Fomento mercantil", d:"Crédito adquirido por sociedade de fomento mercantil (factoring) do faturizado (cliente).", label:"Factoring / Fomento mercantil"}
+];
+
+/* Adapta a terminologia da lista conforme o credor (securitizadora/FIDC x factoring). */
+function T(s){
+  if(state.credor!=="fac" || !s) return s;
+  return s
+    .replaceAll("Securitizadora / FIDC","Factoring / Fomento mercantil")
+    .replaceAll("securitizadora/FIDC","factoring")
+    .replaceAll("Contrato de cessão de crédito","Contrato de fomento mercantil")
+    .replaceAll("contrato de cessão original","contrato de fomento mercantil original")
+    .replaceAll("cessão com cláusula de regresso","fomento mercantil com cláusula de regresso")
+    .replaceAll("operação de cessão","operação de fomento mercantil")
+    .replaceAll("Cedente","Faturizado")
+    .replaceAll("cedente","faturizado");
+}
+
+/* ============================ ESTADO ============================ */
+const KEY = "fa_checklist_v1";
+let state = load() || {credor:"sec", type:null, motivos:["inad"], ident:{}, checks:{}, notas:"", flt:{pend:false,obrig:false}};
+if(!state.flt) state.flt={pend:false,obrig:false};
+if(!state.motivos) state.motivos=["inad"];
+if(!state.credor) state.credor="sec";
+
+function load(){try{return JSON.parse(localStorage.getItem(KEY));}catch(e){return null;}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+
+/* ============================ RENDER ============================ */
+const pickGrid=document.getElementById("pickGrid");
+const credorGrid=document.getElementById("credorGrid");
+const moptsEl=document.getElementById("mopts");
+const listEl=document.getElementById("list");
+
+function renderCredor(){
+  credorGrid.innerHTML="";
+  CREDORES.forEach(c=>{
+    const b=document.createElement("button");
+    b.className="credor"+(state.credor===c.id?" active":"");
+    b.innerHTML=`<span class="dot"></span><span><span class="t">${c.t}</span><span class="d">${c.d}</span></span>`;
+    b.onclick=()=>{state.credor=c.id; save(); renderAll();};
+    credorGrid.appendChild(b);
+  });
+  const cur=CREDORES.find(c=>c.id===state.credor)||CREDORES[0];
+  document.getElementById("regimePill").textContent="Credor: "+cur.label;
+}
+
+function renderPicks(){
+  pickGrid.innerHTML="";
+  Object.entries(DATA).forEach(([key,d])=>{
+    const b=document.createElement("button");
+    b.className="pick"+(state.type===key?" active":"");
+    b.innerHTML=`<span class="ico">${d.ico}</span><span><span class="t">${T(d.label)}</span><span class="d">${T(d.when)}</span></span>`;
+    b.onclick=()=>{state.type=key; save(); renderAll();};
+    pickGrid.appendChild(b);
+  });
+}
+
+function renderMotivos(){
+  const card=document.getElementById("motivosCard");
+  const show = state.type==="regresso";
+  card.style.display = show?"block":"none";
+  if(!show) return;
+  moptsEl.innerHTML="";
+  MOTIVOS.forEach(m=>{
+    const on=state.motivos.includes(m.id);
+    const el=document.createElement(m.base?"div":"button");
+    el.className="mopt"+(on?" on":"")+(m.base?" base":"");
+    el.innerHTML=`<span class="box"></span><span>${T(m.label)}</span>`;
+    if(!m.base){
+      el.onclick=()=>{
+        if(state.motivos.includes(m.id)) state.motivos=state.motivos.filter(x=>x!==m.id);
+        else state.motivos.push(m.id);
+        save(); renderList(); renderMotivos();
+      };
+    }
+    moptsEl.appendChild(el);
+  });
+}
+
+function sectionVisible(sec){
+  if(!sec.motivo) return true;
+  return state.motivos.includes(sec.motivo);
+}
+
+function renderList(){
+  if(!state.type){
+    listEl.innerHTML='<div class="empty">Selecione o tipo de cobrança acima para ver os documentos necessários.</div>';
+    document.getElementById("progressWrap").style.display="none";
+    document.getElementById("notasCard").style.display="none";
+    document.getElementById("actions").style.display="none";
+    document.getElementById("hintSave").style.display="none";
+    return;
+  }
+  const d=DATA[state.type];
+  listEl.innerHTML="";
+  d.sections.forEach(sec=>{
+    if(!sectionVisible(sec)) return;
+    const secEl=document.createElement("div");
+    secEl.className="section";
+    secEl.innerHTML=`<h3><span class="num">${sec.num}</span>${T(sec.title)}</h3>`
+      +(sec.tip?`<div class="stip">${T(sec.tip)}</div>`:"")
+      +`<div class="goldline"></div>`;
+    sec.items.forEach(it=>{
+      const ckey=`${state.type}:${sec.id}:${it.id}`;
+      const on=!!state.checks[ckey];
+      const row=document.createElement("div");
+      row.className="item"+(on?" checked":"");
+      row.dataset.ckey=ckey; row.dataset.lvl=it.lvl;
+      row.innerHTML=`
+        <div class="ckbox"></div>
+        <div class="body">
+          <div class="head"><span class="name">${T(it.n)}</span><span class="badge ${LEVELS[it.lvl].cls}">${LEVELS[it.lvl].label}</span></div>
+          <div class="desc">${T(it.d)}</div>
+          ${it.tip?`<div class="tip">${T(it.tip)}</div>`:""}
+        </div>`;
+      row.querySelector(".ckbox").onclick=()=>{
+        state.checks[ckey]=!state.checks[ckey];
+        row.classList.toggle("checked",state.checks[ckey]);
+        save(); updateProgress(); applyFilters();
+      };
+      secEl.appendChild(row);
+    });
+    listEl.appendChild(secEl);
+  });
+  document.getElementById("progressWrap").style.display="block";
+  document.getElementById("notasCard").style.display="block";
+  document.getElementById("actions").style.display="flex";
+  document.getElementById("hintSave").style.display="block";
+  const credorLabel=(CREDORES.find(c=>c.id===state.credor)||CREDORES[0]).label;
+  document.getElementById("progLead").textContent="Documentos — "+T(d.label)+" · "+credorLabel;
+  updateProgress(); applyFilters();
+}
+
+function visibleItems(){
+  return Array.from(listEl.querySelectorAll(".item"));
+}
+
+function updateProgress(){
+  const items=visibleItems();
+  let total=items.length, done=0, obTot=0, obDone=0;
+  const pend=[];
+  items.forEach(r=>{
+    const on=state.checks[r.dataset.ckey];
+    if(on) done++;
+    if(r.dataset.lvl==="obrig"){obTot++; if(on) obDone++; else pend.push(r.querySelector(".name").textContent);}
+  });
+  document.getElementById("chipObrig").innerHTML=`Obrigatórios: <b>${obDone}/${obTot}</b>`;
+  document.getElementById("chipDone").innerHTML=`Separados: <b>${done}/${total}</b>`;
+  document.getElementById("barFill").style.width=(total?Math.round(done/total*100):0)+"%";
+  const alert=document.getElementById("alertBox");
+  if(obTot>0 && obDone<obTot){
+    alert.className="alert show";
+    alert.innerHTML=`Ainda faltam <b>${obTot-obDone}</b> documento(s) obrigatório(s): ${pend.join(" · ")}.`;
+  }else if(obTot>0){
+    alert.className="alert show ok";
+    alert.innerHTML=`✓ Todos os documentos obrigatórios foram separados. Você já pode salvar em PDF e enviar.`;
+  }else{
+    alert.className="alert";
+  }
+}
+
+function applyFilters(){
+  const {pend,obrig}=state.flt;
+  visibleItems().forEach(r=>{
+    let hide=false;
+    if(pend && state.checks[r.dataset.ckey]) hide=true;
+    if(obrig && r.dataset.lvl!=="obrig") hide=true;
+    r.classList.toggle("hide",hide);
+  });
+  document.getElementById("tgPend").classList.toggle("on",pend);
+  document.getElementById("tgObrig").classList.toggle("on",obrig);
+}
+
+/* ============================ IDENTIFICAÇÃO / NOTAS ============================ */
+document.querySelectorAll(".field input").forEach(inp=>{
+  const id=inp.dataset.id;
+  inp.value=state.ident[id]||"";
+  inp.oninput=()=>{state.ident[id]=inp.value; save();};
+});
+const notas=document.getElementById("notas");
+notas.value=state.notas||"";
+notas.oninput=()=>{state.notas=notas.value; save();};
+
+/* ============================ BOTÕES ============================ */
+document.getElementById("tgPend").onclick=()=>{state.flt.pend=!state.flt.pend; save(); applyFilters();};
+document.getElementById("tgObrig").onclick=()=>{state.flt.obrig=!state.flt.obrig; save(); applyFilters();};
+/* Diálogo próprio (não usa confirm/alert nativos, que ficam bloqueados em páginas incorporadas) */
+function askConfirm(msg, yesLabel, onYes){
+  const bg=document.getElementById("modalBg");
+  const yes=document.getElementById("modalYes"), no=document.getElementById("modalNo");
+  document.getElementById("modalMsg").textContent=msg;
+  yes.textContent=yesLabel||"Confirmar"; no.style.display="";
+  bg.classList.add("show");
+  function close(){bg.classList.remove("show"); yes.onclick=null; no.onclick=null; bg.onclick=null;}
+  yes.onclick=()=>{close(); if(onYes) onYes();};
+  no.onclick=close;
+  bg.onclick=e=>{ if(e.target===bg) close(); };
+}
+function showInfo(msg){
+  const bg=document.getElementById("modalBg");
+  const yes=document.getElementById("modalYes"), no=document.getElementById("modalNo");
+  document.getElementById("modalMsg").textContent=msg;
+  no.style.display="none"; yes.textContent="Entendi";
+  bg.classList.add("show");
+  function close(){bg.classList.remove("show"); yes.onclick=null; bg.onclick=null; no.style.display="";}
+  yes.onclick=close;
+  bg.onclick=e=>{ if(e.target===bg) close(); };
+}
+
+document.getElementById("btnPrint").onclick=()=>{
+  try{ window.print(); }
+  catch(e){ showInfo("Para salvar em PDF, abra este checklist em uma aba do navegador (a pré-visualização do link não permite imprimir). No computador: pressione Ctrl+P e escolha “Salvar como PDF”."); }
+};
+
+function resetAll(){
+  askConfirm("Apagar todas as marcações e dados preenchidos e começar um novo caso?", "Apagar tudo", ()=>{
+    state={credor:"sec",type:null,motivos:["inad"],ident:{},checks:{},notas:"",flt:{pend:false,obrig:false}};
+    try{localStorage.removeItem(KEY);}catch(e){}
+    save();
+    document.querySelectorAll(".field input").forEach(i=>i.value="");
+    notas.value="";
+    renderAll();
+    window.scrollTo({top:0,behavior:"smooth"});
+  });
+}
+document.getElementById("btnReset").onclick=resetAll;
+document.getElementById("btnClearTop").onclick=resetAll;
+
+/* ============================ INIT ============================ */
+function renderAll(){renderCredor(); renderPicks(); renderMotivos(); renderList();}
+renderAll();
+</script>
+</body>
+</html>
