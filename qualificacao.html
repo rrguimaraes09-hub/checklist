@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerador de Qualificação das Partes — Felipe Albuquerque Advocacia</title>
+<style>
+  :root{
+    --navy:#1b2a4a; --navy-2:#24365c; --gold:#b0893c;
+    --ink:#1f2733; --muted:#5b6675; --line:#e4e7ec;
+    --bg:#f4f6f9; --card:#fff;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.06);
+    --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:var(--font);color:var(--ink);background:var(--bg);line-height:1.5}
+  .wrap{max-width:1180px;margin:0 auto;padding:24px 20px 80px}
+
+  .masthead{background:linear-gradient(180deg,var(--navy),var(--navy-2));color:#fff;
+    border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+  .masthead .top{display:flex;align-items:center;gap:14px;padding:18px 24px 4px}
+  .monogram{width:42px;height:42px;flex:0 0 auto;border:1.5px solid var(--gold);border-radius:9px;
+    display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;
+    font-weight:700;letter-spacing:1px;color:var(--gold);font-size:16px}
+  .firm{font-family:Georgia,serif;font-size:13px;letter-spacing:.5px;text-transform:uppercase;font-weight:700}
+  .firm small{display:block;font-family:var(--font);font-size:11px;color:#c3cbdb;text-transform:none;font-weight:400}
+  .clearTop{margin-left:auto;font-family:inherit;font-size:12.5px;font-weight:600;color:#e7ecf6;
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.28);
+    padding:7px 14px;border-radius:20px;cursor:pointer}
+  .clearTop:hover{background:rgba(255,255,255,.18);border-color:var(--gold)}
+  .masthead h1{margin:0;padding:4px 24px 14px;font-size:19px;font-weight:700}
+  .goldbar{height:4px;background:var(--gold)}
+
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px;align-items:start}
+  @media(max-width:920px){.cols{grid-template-columns:1fr}}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:18px 20px;margin-bottom:18px}
+  .card h2{margin:0 0 12px;font-size:12.5px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted)}
+
+  .field{margin-bottom:11px}
+  .field label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px;font-weight:600}
+  .field input,.field select{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:8px;
+    font-family:inherit;font-size:13.5px;color:var(--ink);background:#fff}
+  .field input:focus,.field select:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(27,42,74,.10)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .grid3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px}
+  @media(max-width:560px){.grid2,.grid3{grid-template-columns:1fr}}
+
+  .nat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+  @media(max-width:560px){.nat-grid{grid-template-columns:1fr}}
+  .nat{border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;
+    background:#fff;font-family:inherit;text-align:center;font-size:13px;font-weight:700;color:var(--ink)}
+  .nat small{display:block;font-weight:400;font-size:11px;color:var(--muted);margin-top:2px}
+  .nat.on{border-color:var(--navy);background:#f7f9fc;box-shadow:0 0 0 3px rgba(27,42,74,.10)}
+
+  .reu{border:1px solid var(--line);border-radius:12px;padding:14px 14px 6px;margin-bottom:12px;background:#fbfcfe}
+  .reu .rhead{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .reu .rtitle{font-weight:700;font-size:13px;color:var(--navy)}
+  .reu .del{margin-left:auto;background:none;border:1px solid var(--line);color:#b3261e;
+    border-radius:8px;padding:4px 10px;font-size:12px;cursor:pointer;font-family:inherit}
+  .reu .del:hover{border-color:#b3261e}
+  .addreu{width:100%;padding:11px;border:1.5px dashed #b9c6dd;background:#f4f7fc;border-radius:10px;
+    color:var(--navy);font-weight:700;font-size:13.5px;cursor:pointer;font-family:inherit}
+  .addreu:hover{border-color:var(--navy)}
+
+  .out-card{position:sticky;top:14px}
+  .preview{border:1px solid var(--line);border-radius:10px;padding:20px 22px;background:#fff;
+    font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.8;text-align:justify;
+    min-height:180px;max-height:56vh;overflow:auto}
+  .preview .end{font-weight:700;text-align:left}
+  .preview .acao{font-weight:700;text-align:center;margin:10px 0}
+  .preview p{margin:0 0 10px;text-indent:2em}
+  .preview p.noind{text-indent:0}
+  .btns{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+  .btn{font-family:inherit;font-size:13.5px;font-weight:600;padding:10px 16px;border-radius:9px;
+    cursor:pointer;border:1px solid transparent}
+  .btn.primary{background:var(--navy);color:#fff}
+  .btn.primary:hover{background:#16233d}
+  .btn.ghost{background:#fff;color:var(--navy);border-color:var(--line)}
+  .btn.ghost:hover{border-color:var(--navy)}
+  .copied{font-size:12px;color:#1f7a4d;font-weight:700;align-self:center;display:none}
+  .hint{font-size:11.5px;color:var(--muted);margin-top:8px}
+
+  .modal-bg{position:fixed;inset:0;background:rgba(15,23,42,.5);display:none;
+    align-items:center;justify-content:center;z-index:200;padding:20px}
+  .modal-bg.show{display:flex}
+  .modal{background:#fff;border-radius:14px;max-width:380px;width:100%;padding:22px}
+  .modal p{margin:0 0 18px;font-size:14px}
+  .modal .btns{justify-content:flex-end;margin-top:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="masthead">
+    <div class="top">
+      <div class="monogram">F|A</div>
+      <div class="firm">Felipe Albuquerque Advocacia<small>Ferramenta interna</small></div>
+      <button class="clearTop" id="btnReset">↺ Recomeçar</button>
+    </div>
+    <h1>Gerador de Qualificação das Partes</h1>
+    <div class="goldbar"></div>
+  </div>
+
+  <div class="cols">
+    <!-- ============ COLUNA FORMULÁRIO ============ -->
+    <div>
+      <div class="card">
+        <h2>Ação</h2>
+        <div class="grid2">
+          <div class="field"><label>Tipo de ação</label>
+            <select id="acaoTipo">
+              <option>Execução de Título Extrajudicial</option>
+              <option>Ação Monitória</option>
+              <option value="outra">Outra (digitar)</option>
+            </select>
+          </div>
+          <div class="field" id="acaoOutraWrap" style="display:none"><label>Nome da ação</label>
+            <input id="acaoOutra" placeholder="Ex.: Ação de Cobrança"></div>
+        </div>
+        <div class="field"><label>Juízo (endereçamento — opcional)</label>
+          <input id="juizo" placeholder="Ex.: 2ª Vara Cível da Comarca de Criciúma/SC"></div>
+      </div>
+
+      <div class="card">
+        <h2>Polo ativo (credor)</h2>
+        <div class="nat-grid">
+          <button class="nat" data-nat="sec">Securitizadora<small>PJ com CNPJ próprio</small></button>
+          <button class="nat" data-nat="fidc">FIDC<small>condomínio · Res. CVM 175/2022</small></button>
+          <button class="nat" data-nat="fac">Factoring<small>fomento mercantil</small></button>
+        </div>
+
+        <div id="ativoPJ">
+          <div class="field"><label>Razão social</label><input data-a="razao" placeholder="Ex.: XYZ Securitizadora S.A."></div>
+          <div class="grid2">
+            <div class="field"><label>CNPJ</label><input data-a="cnpj" placeholder="00.000.000/0001-00"></div>
+            <div class="field"><label>CEP</label><input data-a="cep" placeholder="88.800-000"></div>
+          </div>
+          <div class="field"><label>Sede (logradouro, nº, complemento, bairro)</label><input data-a="end" placeholder="Rua Tal, nº 100, Sala 1, Centro"></div>
+          <div class="field"><label>Município/UF</label><input data-a="cidade" placeholder="Criciúma/SC"></div>
+        </div>
+
+        <div id="ativoFIDC" style="display:none">
+          <div class="field"><label>Nome do fundo</label><input data-a="fnome" placeholder="Ex.: FIDC XYZ Multissetorial"></div>
+          <div class="grid2">
+            <div class="field"><label>CNPJ do fundo</label><input data-a="fcnpj" placeholder="00.000.000/0001-00"></div>
+            <div class="field"><label>Forma de condomínio</label>
+              <select data-a="fcond"><option value="fechado">fechado</option><option value="aberto">aberto</option><option value="">não indicar</option></select></div>
+          </div>
+          <div class="field"><label>Administradora — razão social</label><input data-a="anome" placeholder="Ex.: ABC Administradora de Recursos Ltda."></div>
+          <div class="grid2">
+            <div class="field"><label>Administradora — CNPJ</label><input data-a="acnpj" placeholder="00.000.000/0001-00"></div>
+            <div class="field"><label>Administradora — CEP</label><input data-a="acep" placeholder="00.000-000"></div>
+          </div>
+          <div class="field"><label>Administradora — sede</label><input data-a="aend" placeholder="Av. Tal, nº 500, 10º andar, Bairro"></div>
+          <div class="field"><label>Administradora — Município/UF</label><input data-a="acidade" placeholder="São Paulo/SP"></div>
+          <div class="field"><label>Gestora (opcional) — razão social e CNPJ</label><input data-a="gestora" placeholder="Ex.: DEF Gestora Ltda., CNPJ 00.000.000/0001-00"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Polo passivo (devedores)</h2>
+        <div id="reusWrap"></div>
+        <button class="addreu" id="addReu">+ Adicionar parte no polo passivo</button>
+      </div>
+    </div>
+
+    <!-- ============ COLUNA SAÍDA ============ -->
+    <div>
+      <div class="card out-card">
+        <h2>Texto gerado — pronto para colar</h2>
+        <div class="preview" id="preview"></div>
+        <div class="btns">
+          <button class="btn primary" id="btnCopyFmt">Copiar com formatação</button>
+          <button class="btn ghost" id="btnCopyTxt">Copiar texto puro</button>
+          <span class="copied" id="copiedMsg">✓ Copiado!</span>
+        </div>
+        <div class="hint">“Copiar com formatação” preserva os negritos ao colar no Word. Os dados ficam salvos automaticamente neste computador.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-bg" id="modalBg">
+    <div class="modal">
+      <p id="modalMsg"></p>
+      <div class="btns">
+        <button class="btn ghost" id="modalNo">Cancelar</button>
+        <button class="btn primary" id="modalYes">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ================= ESTADO ================= */
+const KEY="fa_qualif_v1";
+let state = load() || {acao:{tipo:"Execução de Título Extrajudicial",outra:"",juizo:""},nat:"sec",ativo:{},reus:[novoReu()]};
+function novoReu(){return {tipo:"pj",papel:"",genero:"m",c:{}};}
+function load(){try{return JSON.parse(localStorage.getItem(KEY));}catch(e){return null;}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+
+const PAPEIS=["","sacado","cedente","garantidor solidário","avalista","fiador","emitente do cheque","devedor"];
+
+/* ================= HELPERS ================= */
+function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function caps(s){return esc(String(s||"").toUpperCase());}
+function junta(parts){return parts.filter(Boolean).join(", ");}
+
+/* Qualificação do polo ativo -> HTML (com <b>) */
+function ativoHTML(){
+  const a=state.ativo;
+  if(state.nat==="fidc"){
+    const cond=a.fcond===""?"":` constituída sob a forma de condomínio ${esc(a.fcond||"fechado")},`;
+    let t=`<b>${caps(a.fnome||"[NOME DO FUNDO]")}</b>, comunhão de recursos${cond} sem personalidade jurídica, regida pela Resolução CVM nº 175/2022, inscrita no CNPJ sob o nº ${esc(a.fcnpj||"[CNPJ do fundo]")}, neste ato representada por sua administradora <b>${caps(a.anome||"[ADMINISTRADORA]")}</b>, pessoa jurídica de direito privado, inscrita no CNPJ sob o nº ${esc(a.acnpj||"[CNPJ da administradora]")}, com sede na ${esc(a.aend||"[endereço da administradora]")}, ${esc(a.acidade||"[Município/UF]")}, CEP ${esc(a.acep||"[CEP]")}`;
+    if(a.gestora) t+=`, e por sua gestora <b>${caps(a.gestora.split(",")[0])}</b>${esc(a.gestora.includes(",")?","+a.gestora.substring(a.gestora.indexOf(",")+1):"")}`;
+    return t;
+  }
+  const tipoTxt = state.nat==="fac" ? "sociedade de fomento mercantil, pessoa jurídica de direito privado" : "pessoa jurídica de direito privado";
+  return `<b>${caps(a.razao||"[RAZÃO SOCIAL]")}</b>, ${tipoTxt}, inscrita no CNPJ sob o nº ${esc(a.cnpj||"[CNPJ]")}, com sede na ${esc(a.end||"[endereço]")}, ${esc(a.cidade||"[Município/UF]")}, CEP ${esc(a.cep||"[CEP]")}`;
+}
+
+/* Qualificação de um réu -> HTML */
+function reuHTML(r){
+  const papel = r.papel ? `, na condição de ${esc(r.papel)},` : ",";
+  const c=r.c;
+  if(r.tipo==="pj"){
+    return `<b>${caps(c.razao||"[RAZÃO SOCIAL]")}</b>${papel} pessoa jurídica de direito privado, inscrita no CNPJ sob o nº ${esc(c.cnpj||"[CNPJ]")}, com sede na ${esc(c.end||"[endereço]")}, ${esc(c.cidade||"[Município/UF]")}, CEP ${esc(c.cep||"[CEP]")}`;
+  }
+  if(r.tipo==="pf"){
+    const g=r.genero==="f";
+    const quali=junta([c.nac||"brasileiro"+(g?"a":""),c.estciv||(g?"[estado civil]":"[estado civil]"),c.prof||"[profissão]"]);
+    return `<b>${caps(c.nome||"[NOME]")}</b>${papel} ${esc(quali)}, inscrit${g?"a":"o"} no CPF sob o nº ${esc(c.cpf||"[CPF]")}, residente e domiciliad${g?"a":"o"} na ${esc(c.end||"[endereço]")}, ${esc(c.cidade||"[Município/UF]")}, CEP ${esc(c.cep||"[CEP]")}`;
+  }
+  /* Empresário individual: firma (CNPJ) + pessoa física (CPF) — regra do escritório */
+  const g=r.genero==="f";
+  const quali=junta([c.nac||"brasileir"+(g?"a":"o"),c.estciv||"[estado civil]",c.prof||("empresári"+(g?"a":"o"))]);
+  const firma=`<b>${caps(c.firma||c.nome||"[NOME EMPRESARIAL]")}</b>${papel} empresári${g?"a":"o"} individual, com firma inscrita no CNPJ sob o nº ${esc(c.cnpj||"[CNPJ]")}, estabelecid${g?"a":"o"} na ${esc(c.endcom||c.end||"[endereço comercial]")}, ${esc(c.cidade||"[Município/UF]")}, CEP ${esc(c.cep||"[CEP]")}`;
+  const pf=`<b>${caps(c.nome||"[NOME DO TITULAR]")}</b>, ${esc(quali)}, inscrit${g?"a":"o"} no CPF sob o nº ${esc(c.cpf||"[CPF]")}, residente e domiciliad${g?"a":"o"} na ${esc(c.end||"[endereço residencial]")}, ${esc(c.cidaderes||c.cidade||"[Município/UF]")}, CEP ${esc(c.cepres||c.cep||"[CEP]")}`;
+  return firma+"; e, na pessoa de seu titular, "+pf;
+}
+
+/* ================= SAÍDA ================= */
+function buildHTML(){
+  const nomeAcao = state.acao.tipo==="outra" ? (state.acao.outra||"[NOME DA AÇÃO]") : state.acao.tipo;
+  let h="";
+  if(state.acao.juizo) h+=`<p class="end noind">AO JUÍZO DE DIREITO DA ${caps(state.acao.juizo).replace(/^(A |AO |DA |DE )/,"")}.</p><p class="noind">&nbsp;</p>`;
+  h+=`<p>${ativoHTML()}, vem, respeitosamente, à presença de Vossa Excelência, por meio de seu procurador que a esta subscreve, propor a presente</p>`;
+  h+=`<p class="acao noind">${caps(nomeAcao)}</p>`;
+  const reus=state.reus.map(reuHTML);
+  let emface="em face de ";
+  reus.forEach((r,i)=>{
+    emface+=r;
+    if(i<reus.length-2) emface+="; ";
+    else if(i===reus.length-2) emface+="; e ";
+  });
+  emface+=", pelos fatos e fundamentos a seguir expostos.";
+  h+=`<p>${emface}</p>`;
+  return h;
+}
+function buildTXT(){
+  const tmp=document.createElement("div");
+  tmp.innerHTML=buildHTML().replace(/<p[^>]*>/g,"").replace(/<\/p>/g,"\n\n").replace(/&nbsp;/g,"");
+  return tmp.textContent.replace(/\n{3,}/g,"\n\n").trim();
+}
+function renderOut(){document.getElementById("preview").innerHTML=buildHTML(); save();}
+
+/* ================= FORM POLO ATIVO ================= */
+function renderNat(){
+  document.querySelectorAll(".nat").forEach(b=>b.classList.toggle("on",b.dataset.nat===state.nat));
+  document.getElementById("ativoPJ").style.display = state.nat==="fidc"?"none":"block";
+  document.getElementById("ativoFIDC").style.display = state.nat==="fidc"?"block":"none";
+}
+document.querySelectorAll(".nat").forEach(b=>{
+  b.onclick=()=>{state.nat=b.dataset.nat; renderNat(); renderOut();};
+});
+document.querySelectorAll("[data-a]").forEach(inp=>{
+  inp.value=state.ativo[inp.dataset.a]||"";
+  if(inp.tagName==="SELECT" && state.ativo[inp.dataset.a]!==undefined) inp.value=state.ativo[inp.dataset.a];
+  inp.oninput=inp.onchange=()=>{state.ativo[inp.dataset.a]=inp.value; renderOut();};
+});
+
+/* ================= FORM AÇÃO ================= */
+const acaoTipo=document.getElementById("acaoTipo"), acaoOutra=document.getElementById("acaoOutra"),
+      juizo=document.getElementById("juizo");
+acaoTipo.value=state.acao.tipo; acaoOutra.value=state.acao.outra||""; juizo.value=state.acao.juizo||"";
+function syncAcaoUI(){document.getElementById("acaoOutraWrap").style.display = acaoTipo.value==="outra"?"block":"none";}
+acaoTipo.onchange=()=>{state.acao.tipo=acaoTipo.value; syncAcaoUI(); renderOut();};
+acaoOutra.oninput=()=>{state.acao.outra=acaoOutra.value; renderOut();};
+juizo.oninput=()=>{state.acao.juizo=juizo.value; renderOut();};
+syncAcaoUI();
+
+/* ================= FORM RÉUS ================= */
+const CAMPOS_REU={
+  pj:[["razao","Razão social","Ex.: Empresa Devedora Ltda.",1],["cnpj","CNPJ","00.000.000/0001-00"],["cep","CEP","00.000-000"],["end","Sede (logradouro, nº, bairro)","Rua Tal, nº 200, Centro",1],["cidade","Município/UF","Cidade/UF"]],
+  pf:[["nome","Nome completo","Ex.: João da Silva",1],["cpf","CPF","000.000.000-00"],["nac","Nacionalidade","brasileiro(a)"],["estciv","Estado civil","casado(a)"],["prof","Profissão","empresário(a)"],["end","Residência (logradouro, nº, bairro)","Rua Tal, nº 300, Bairro",1],["cidade","Município/UF","Cidade/UF"],["cep","CEP","00.000-000"]],
+  ei:[["firma","Nome empresarial (firma)","Ex.: João da Silva ME",1],["cnpj","CNPJ da firma","00.000.000/0001-00"],["endcom","Endereço comercial","Rua Tal, nº 400, Centro",1],["cidade","Município/UF (comercial)","Cidade/UF"],["cep","CEP (comercial)","00.000-000"],["nome","Nome do titular (pessoa física)","Ex.: João da Silva",1],["cpf","CPF do titular","000.000.000-00"],["nac","Nacionalidade","brasileiro(a)"],["estciv","Estado civil","casado(a)"],["prof","Profissão","empresário(a)"],["end","Residência do titular","Rua Tal, nº 300, Bairro",1],["cidaderes","Município/UF (residência)","Cidade/UF"],["cepres","CEP (residência)","00.000-000"]]
+};
+function renderReus(){
+  const w=document.getElementById("reusWrap"); w.innerHTML="";
+  state.reus.forEach((r,idx)=>{
+    const d=document.createElement("div"); d.className="reu";
+    let head=`<div class="rhead"><span class="rtitle">${idx+1}º devedor</span>`;
+    if(state.reus.length>1) head+=`<button class="del" data-del="${idx}">remover</button>`;
+    head+=`</div>`;
+    let selTipo=`<div class="grid3">
+      <div class="field"><label>Tipo</label><select data-r="${idx}" data-k="__tipo">
+        <option value="pj"${r.tipo==="pj"?" selected":""}>Pessoa jurídica</option>
+        <option value="pf"${r.tipo==="pf"?" selected":""}>Pessoa física</option>
+        <option value="ei"${r.tipo==="ei"?" selected":""}>Empresário individual (firma + PF)</option>
+      </select></div>
+      <div class="field"><label>Condição</label><select data-r="${idx}" data-k="__papel">${PAPEIS.map(p=>`<option value="${p}"${r.papel===p?" selected":""}>${p||"não indicar"}</option>`).join("")}</select></div>
+      <div class="field"${r.tipo==="pj"?' style="visibility:hidden"':""}><label>Gênero (PF)</label><select data-r="${idx}" data-k="__genero">
+        <option value="m"${r.genero==="m"?" selected":""}>masculino</option>
+        <option value="f"${r.genero==="f"?" selected":""}>feminino</option></select></div>
+    </div>`;
+    let campos="";
+    CAMPOS_REU[r.tipo].forEach(([k,lab,ph,full])=>{
+      campos+=`<div class="field"><label>${lab}</label><input data-r="${idx}" data-k="${k}" value="${esc(r.c[k]||"")}" placeholder="${ph}"></div>`;
+    });
+    d.innerHTML=head+selTipo+campos;
+    w.appendChild(d);
+  });
+  w.querySelectorAll("[data-r]").forEach(inp=>{
+    const idx=+inp.dataset.r, k=inp.dataset.k;
+    inp.oninput=inp.onchange=()=>{
+      const r=state.reus[idx];
+      if(k==="__tipo"){r.tipo=inp.value; renderReus();}
+      else if(k==="__papel"){r.papel=inp.value;}
+      else if(k==="__genero"){r.genero=inp.value;}
+      else r.c[k]=inp.value;
+      renderOut();
+    };
+  });
+  w.querySelectorAll("[data-del]").forEach(b=>{
+    b.onclick=()=>{state.reus.splice(+b.dataset.del,1); renderReus(); renderOut();};
+  });
+}
+document.getElementById("addReu").onclick=()=>{state.reus.push(novoReu()); renderReus(); renderOut();};
+
+/* ================= COPIAR ================= */
+function flashCopied(){const m=document.getElementById("copiedMsg");m.style.display="inline";setTimeout(()=>m.style.display="none",1800);}
+async function copyFmt(){
+  const html=buildHTML().replace(/ class="[^"]*"/g,"");
+  const txt=buildTXT();
+  try{
+    await navigator.clipboard.write([new ClipboardItem({
+      "text/html":new Blob([html],{type:"text/html"}),
+      "text/plain":new Blob([txt],{type:"text/plain"})
+    })]);
+    flashCopied(); return;
+  }catch(e){}
+  /* fallback: seleção de um nó oculto */
+  const div=document.createElement("div");
+  div.contentEditable="true"; div.style.position="fixed"; div.style.left="-9999px";
+  div.innerHTML=html; document.body.appendChild(div);
+  const range=document.createRange(); range.selectNodeContents(div);
+  const sel=getSelection(); sel.removeAllRanges(); sel.addRange(range);
+  document.execCommand("copy"); sel.removeAllRanges(); div.remove();
+  flashCopied();
+}
+async function copyTxt(){
+  const txt=buildTXT();
+  try{ await navigator.clipboard.writeText(txt); flashCopied(); return;}catch(e){}
+  const ta=document.createElement("textarea"); ta.value=txt; ta.style.position="fixed"; ta.style.left="-9999px";
+  document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); flashCopied();
+}
+document.getElementById("btnCopyFmt").onclick=copyFmt;
+document.getElementById("btnCopyTxt").onclick=copyTxt;
+
+/* ================= RECOMEÇAR ================= */
+document.getElementById("btnReset").onclick=()=>{
+  const bg=document.getElementById("modalBg");
+  document.getElementById("modalMsg").textContent="Apagar todos os dados preenchidos e começar do zero?";
+  bg.classList.add("show");
+  document.getElementById("modalYes").onclick=()=>{
+    bg.classList.remove("show");
+    state={acao:{tipo:"Execução de Título Extrajudicial",outra:"",juizo:""},nat:"sec",ativo:{},reus:[novoReu()]};
+    try{localStorage.removeItem(KEY);}catch(e){}
+    save();
+    acaoTipo.value=state.acao.tipo; acaoOutra.value=""; juizo.value="";
+    document.querySelectorAll("[data-a]").forEach(i=>{if(i.tagName!=="SELECT")i.value="";});
+    syncAcaoUI(); renderNat(); renderReus(); renderOut();
+    window.scrollTo({top:0,behavior:"smooth"});
+  };
+  document.getElementById("modalNo").onclick=()=>bg.classList.remove("show");
+  bg.onclick=e=>{if(e.target===bg)bg.classList.remove("show");};
+};
+
+/* ================= INIT ================= */
+renderNat(); renderReus(); renderOut();
+</script>
+</body>
+</html>
