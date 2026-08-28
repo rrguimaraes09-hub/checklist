@@ -26,12 +26,14 @@
     font-weight:700;letter-spacing:1px;color:var(--gold);font-size:16px}
   .firm{font-family:Georgia,serif;font-size:13px;letter-spacing:.5px;text-transform:uppercase;font-weight:700}
   .firm small{display:block;font-family:var(--font);font-size:11px;color:#c3cbdb;text-transform:none;font-weight:400}
-  .clearTop{margin-left:auto;font-family:inherit;font-size:12.5px;font-weight:600;color:#e7ecf6;
+  .clearTop{font-family:inherit;font-size:12.5px;font-weight:600;color:#e7ecf6;
     background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.28);
     padding:7px 14px;border-radius:20px;cursor:pointer}
   .clearTop:hover{background:rgba(255,255,255,.18);border-color:var(--gold)}
   a.clearTop{text-decoration:none;margin-left:auto}
-  a.clearTop + .clearTop{margin-left:0}
+  .masthead h1{margin:0;padding:4px 24px 14px;font-size:19px;font-weight:700}
+  .goldbar{height:4px;background:var(--gold)}
+
   .docbtn{width:100%;margin:0 0 12px;padding:9px 12px;border:1.5px dashed #b9c6dd;background:#f4f7fc;
     border-radius:9px;color:var(--navy);font-weight:700;font-size:12.5px;cursor:pointer;font-family:inherit}
   .docbtn:hover{border-color:var(--navy)}
@@ -39,8 +41,6 @@
   .docstatus{font-size:11.5px;color:var(--muted);margin:-6px 0 10px;line-height:1.45}
   .docstatus b{color:#1f7a4d}
   .docstatus .warn{color:#8a6100}
-  .masthead h1{margin:0;padding:4px 24px 14px;font-size:19px;font-weight:700}
-  .goldbar{height:4px;background:var(--gold)}
 
   .cols{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px;align-items:start}
   @media(max-width:920px){.cols{grid-template-columns:1fr}}
@@ -57,13 +57,6 @@
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .grid3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px}
   @media(max-width:560px){.grid2,.grid3{grid-template-columns:1fr}}
-
-  .nat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
-  @media(max-width:560px){.nat-grid{grid-template-columns:1fr}}
-  .nat{border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;
-    background:#fff;font-family:inherit;text-align:center;font-size:13px;font-weight:700;color:var(--ink)}
-  .nat small{display:block;font-weight:400;font-size:11px;color:var(--muted);margin-top:2px}
-  .nat.on{border-color:var(--navy);background:#f7f9fc;box-shadow:0 0 0 3px rgba(27,42,74,.10)}
 
   .reu{border:1px solid var(--line);border-radius:12px;padding:14px 14px 6px;margin-bottom:12px;background:#fbfcfe}
   .reu .rhead{display:flex;align-items:center;gap:10px;margin-bottom:10px}
@@ -136,41 +129,9 @@
       </div>
 
       <div class="card">
-        <h2>Polo ativo (credor)</h2>
-        <button class="docbtn" id="docAtivo">📄 Ler documentos e preencher (cartão CNPJ, contrato, regulamento…)</button>
-        <div class="docstatus" id="docst-ativo"></div>
-        <div class="nat-grid">
-          <button class="nat" data-nat="sec">Securitizadora<small>PJ com CNPJ próprio</small></button>
-          <button class="nat" data-nat="fidc">FIDC<small>condomínio · Res. CVM 175/2022</small></button>
-          <button class="nat" data-nat="fac">Factoring<small>fomento mercantil</small></button>
-        </div>
-
-        <div id="ativoPJ">
-          <div class="field"><label>Razão social</label><input data-a="razao" placeholder="Ex.: XYZ Securitizadora S.A."></div>
-          <div class="grid2">
-            <div class="field"><label>CNPJ</label><input data-a="cnpj" placeholder="00.000.000/0001-00"></div>
-            <div class="field"><label>CEP</label><input data-a="cep" placeholder="88.800-000"></div>
-          </div>
-          <div class="field"><label>Sede (logradouro, nº, complemento, bairro)</label><input data-a="end" placeholder="Rua Tal, nº 100, Sala 1, Centro"></div>
-          <div class="field"><label>Município/UF</label><input data-a="cidade" placeholder="Criciúma/SC"></div>
-        </div>
-
-        <div id="ativoFIDC" style="display:none">
-          <div class="field"><label>Nome do fundo</label><input data-a="fnome" placeholder="Ex.: FIDC XYZ Multissetorial"></div>
-          <div class="grid2">
-            <div class="field"><label>CNPJ do fundo</label><input data-a="fcnpj" placeholder="00.000.000/0001-00"></div>
-            <div class="field"><label>Forma de condomínio</label>
-              <select data-a="fcond"><option value="fechado">fechado</option><option value="aberto">aberto</option><option value="">não indicar</option></select></div>
-          </div>
-          <div class="field"><label>Administradora — razão social</label><input data-a="anome" placeholder="Ex.: ABC Administradora de Recursos Ltda."></div>
-          <div class="grid2">
-            <div class="field"><label>Administradora — CNPJ</label><input data-a="acnpj" placeholder="00.000.000/0001-00"></div>
-            <div class="field"><label>Administradora — CEP</label><input data-a="acep" placeholder="00.000-000"></div>
-          </div>
-          <div class="field"><label>Administradora — sede</label><input data-a="aend" placeholder="Av. Tal, nº 500, 10º andar, Bairro"></div>
-          <div class="field"><label>Administradora — Município/UF</label><input data-a="acidade" placeholder="São Paulo/SP"></div>
-          <div class="field"><label>Gestora (opcional) — razão social e CNPJ</label><input data-a="gestora" placeholder="Ex.: DEF Gestora Ltda., CNPJ 00.000.000/0001-00"></div>
-        </div>
+        <h2>Polo ativo (credores / autores)</h2>
+        <div id="autoresWrap"></div>
+        <button class="addreu" id="addAutor">+ Adicionar autor no polo ativo</button>
       </div>
 
       <div class="card">
@@ -208,33 +169,62 @@
 
 <script>
 /* ================= ESTADO ================= */
-const KEY="fa_qualif_v1";
-let state = load() || {acao:{tipo:"Execução de Título Extrajudicial",outra:"",juizo:""},nat:"sec",ativo:{},reus:[novoReu()]};
+const KEY="fa_qualif_v2";
+function novoAutor(){return {tipo:"sec",genero:"m",c:{}};}
 function novoReu(){return {tipo:"pj",papel:"",genero:"m",c:{}};}
+let state = load() || migraV1() || {acao:{tipo:"Execução de Título Extrajudicial",outra:"",juizo:""},autores:[novoAutor()],reus:[novoReu()]};
+if(!state.autores || !state.autores.length) state.autores=[novoAutor()];
+if(!state.reus || !state.reus.length) state.reus=[novoReu()];
 function load(){try{return JSON.parse(localStorage.getItem(KEY));}catch(e){return null;}}
+function migraV1(){
+  try{
+    const v1=JSON.parse(localStorage.getItem("fa_qualif_v1")); if(!v1) return null;
+    const a=novoAutor(); a.tipo=v1.nat||"sec"; a.c=v1.ativo||{};
+    return {acao:v1.acao||{tipo:"Execução de Título Extrajudicial",outra:"",juizo:""},autores:[a],reus:v1.reus&&v1.reus.length?v1.reus:[novoReu()]};
+  }catch(e){return null;}
+}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
 
 const PAPEIS=["","sacado","cedente","garantidor solidário","avalista","fiador","emitente do cheque","devedor"];
+const TIPOS_AUTOR=[["sec","Securitizadora"],["fidc","FIDC (fundo)"],["fac","Factoring (fomento mercantil)"],["pj","Pessoa jurídica (comum)"],["pf","Pessoa física"],["ei","Empresário individual (firma + PF)"]];
 
 /* ================= HELPERS ================= */
 function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 function caps(s){return esc(String(s||"").toUpperCase());}
 function junta(parts){return parts.filter(Boolean).join(", ");}
-
-/* Qualificação do polo ativo -> HTML (com <b>) */
-function ativoHTML(){
-  const a=state.ativo;
-  if(state.nat==="fidc"){
-    const cond=a.fcond===""?"":` constituída sob a forma de condomínio ${esc(a.fcond||"fechado")},`;
-    let t=`<b>${caps(a.fnome||"[NOME DO FUNDO]")}</b>, comunhão de recursos${cond} sem personalidade jurídica, regida pela Resolução CVM nº 175/2022, inscrita no CNPJ sob o nº ${esc(a.fcnpj||"[CNPJ do fundo]")}, neste ato representada por sua administradora <b>${caps(a.anome||"[ADMINISTRADORA]")}</b>, pessoa jurídica de direito privado, inscrita no CNPJ sob o nº ${esc(a.acnpj||"[CNPJ da administradora]")}, com sede na ${esc(a.aend||"[endereço da administradora]")}, ${esc(a.acidade||"[Município/UF]")}, CEP ${esc(a.acep||"[CEP]")}`;
-    if(a.gestora) t+=`, e por sua gestora <b>${caps(a.gestora.split(",")[0])}</b>${esc(a.gestora.includes(",")?","+a.gestora.substring(a.gestora.indexOf(",")+1):"")}`;
-    return t;
-  }
-  const tipoTxt = state.nat==="fac" ? "sociedade de fomento mercantil, pessoa jurídica de direito privado" : "pessoa jurídica de direito privado";
-  return `<b>${caps(a.razao||"[RAZÃO SOCIAL]")}</b>, ${tipoTxt}, inscrita no CNPJ sob o nº ${esc(a.cnpj||"[CNPJ]")}, com sede na ${esc(a.end||"[endereço]")}, ${esc(a.cidade||"[Município/UF]")}, CEP ${esc(a.cep||"[CEP]")}`;
+function listaCom(arr,liga){ /* "a; b; e c" */
+  let s="";
+  arr.forEach((x,i)=>{
+    s+=x;
+    if(i<arr.length-2) s+="; ";
+    else if(i===arr.length-2) s+="; "+liga+" ";
+  });
+  return s;
 }
 
-/* Qualificação de um réu -> HTML */
+/* ================= QUALIFICAÇÕES ================= */
+function autorHTML(a){
+  const c=a.c, g=a.genero==="f";
+  if(a.tipo==="fidc"){
+    const cond=c.fcond===""?"":` constituída sob a forma de condomínio ${esc(c.fcond||"fechado")},`;
+    let t=`<b>${caps(c.fnome||"[NOME DO FUNDO]")}</b>, comunhão de recursos${cond} sem personalidade jurídica, regida pela Resolução CVM nº 175/2022, inscrita no CNPJ sob o nº ${esc(c.fcnpj||"[CNPJ do fundo]")}, neste ato representada por sua administradora <b>${caps(c.anome||"[ADMINISTRADORA]")}</b>, pessoa jurídica de direito privado, inscrita no CNPJ sob o nº ${esc(c.acnpj||"[CNPJ da administradora]")}, com sede na ${esc(c.aend||"[endereço da administradora]")}, ${esc(c.acidade||"[Município/UF]")}, CEP ${esc(c.acep||"[CEP]")}`;
+    if(c.gestora) t+=`, e por sua gestora <b>${caps(c.gestora.split(",")[0])}</b>${esc(c.gestora.includes(",")?","+c.gestora.substring(c.gestora.indexOf(",")+1):"")}`;
+    return t;
+  }
+  if(a.tipo==="pf"){
+    const quali=junta([c.nac||("brasileir"+(g?"a":"o")),c.estciv||"[estado civil]",c.prof||"[profissão]"]);
+    return `<b>${caps(c.nome||"[NOME]")}</b>, ${esc(quali)}, inscrit${g?"a":"o"} no CPF sob o nº ${esc(c.cpf||"[CPF]")}, residente e domiciliad${g?"a":"o"} na ${esc(c.end||"[endereço]")}, ${esc(c.cidade||"[Município/UF]")}, CEP ${esc(c.cep||"[CEP]")}`;
+  }
+  if(a.tipo==="ei"){
+    const quali=junta([c.nac||("brasileir"+(g?"a":"o")),c.estciv||"[estado civil]",c.prof||("empresári"+(g?"a":"o"))]);
+    const firma=`<b>${caps(c.firma||c.nome||"[NOME EMPRESARIAL]")}</b>, empresári${g?"a":"o"} individual, com firma inscrita no CNPJ sob o nº ${esc(c.cnpj||"[CNPJ]")}, estabelecid${g?"a":"o"} na ${esc(c.endcom||c.end||"[endereço comercial]")}, ${esc(c.cidade||"[Município/UF]")}, CEP ${esc(c.cep||"[CEP]")}`;
+    const pf=`<b>${caps(c.nome||"[NOME DO TITULAR]")}</b>, ${esc(quali)}, inscrit${g?"a":"o"} no CPF sob o nº ${esc(c.cpf||"[CPF]")}, residente e domiciliad${g?"a":"o"} na ${esc(c.end||"[endereço residencial]")}, ${esc(c.cidaderes||c.cidade||"[Município/UF]")}, CEP ${esc(c.cepres||c.cep||"[CEP]")}`;
+    return firma+"; e, na pessoa de seu titular, "+pf;
+  }
+  const tipoTxt = a.tipo==="fac" ? "sociedade de fomento mercantil, pessoa jurídica de direito privado" : "pessoa jurídica de direito privado";
+  return `<b>${caps(c.razao||"[RAZÃO SOCIAL]")}</b>, ${tipoTxt}, inscrita no CNPJ sob o nº ${esc(c.cnpj||"[CNPJ]")}, com sede na ${esc(c.end||"[endereço]")}, ${esc(c.cidade||"[Município/UF]")}, CEP ${esc(c.cep||"[CEP]")}`;
+}
+
 function reuHTML(r){
   const papel = r.papel ? `, na condição de ${esc(r.papel)},` : ",";
   const c=r.c;
@@ -243,10 +233,9 @@ function reuHTML(r){
   }
   if(r.tipo==="pf"){
     const g=r.genero==="f";
-    const quali=junta([c.nac||"brasileiro"+(g?"a":""),c.estciv||(g?"[estado civil]":"[estado civil]"),c.prof||"[profissão]"]);
+    const quali=junta([c.nac||"brasileir"+(g?"a":"o"),c.estciv||"[estado civil]",c.prof||"[profissão]"]);
     return `<b>${caps(c.nome||"[NOME]")}</b>${papel} ${esc(quali)}, inscrit${g?"a":"o"} no CPF sob o nº ${esc(c.cpf||"[CPF]")}, residente e domiciliad${g?"a":"o"} na ${esc(c.end||"[endereço]")}, ${esc(c.cidade||"[Município/UF]")}, CEP ${esc(c.cep||"[CEP]")}`;
   }
-  /* Empresário individual: firma (CNPJ) + pessoa física (CPF) — regra do escritório */
   const g=r.genero==="f";
   const quali=junta([c.nac||"brasileir"+(g?"a":"o"),c.estciv||"[estado civil]",c.prof||("empresári"+(g?"a":"o"))]);
   const firma=`<b>${caps(c.firma||c.nome||"[NOME EMPRESARIAL]")}</b>${papel} empresári${g?"a":"o"} individual, com firma inscrita no CNPJ sob o nº ${esc(c.cnpj||"[CNPJ]")}, estabelecid${g?"a":"o"} na ${esc(c.endcom||c.end||"[endereço comercial]")}, ${esc(c.cidade||"[Município/UF]")}, CEP ${esc(c.cep||"[CEP]")}`;
@@ -259,17 +248,12 @@ function buildHTML(){
   const nomeAcao = state.acao.tipo==="outra" ? (state.acao.outra||"[NOME DA AÇÃO]") : state.acao.tipo;
   let h="";
   if(state.acao.juizo) h+=`<p class="end noind">AO JUÍZO DE DIREITO DA ${caps(state.acao.juizo).replace(/^(A |AO |DA |DE )/,"")}.</p><p class="noind">&nbsp;</p>`;
-  h+=`<p>${ativoHTML()}, vem respeitosamente à presença de Vossa Excelência, por meio de seus procuradores que a esta subscrevem, propor a presente</p>`;
+  const autores=state.autores.map(autorHTML);
+  const verbo = state.autores.length>1 ? "vêm" : "vem";
+  h+=`<p>${listaCom(autores,"e")}, ${verbo} respeitosamente à presença de Vossa Excelência, por meio de seus procuradores que a esta subscrevem, propor a presente</p>`;
   h+=`<p class="acao noind">${caps(nomeAcao)}</p>`;
   const reus=state.reus.map(reuHTML);
-  let emface="em face de ";
-  reus.forEach((r,i)=>{
-    emface+=r;
-    if(i<reus.length-2) emface+="; ";
-    else if(i===reus.length-2) emface+="; e ";
-  });
-  emface+=", pelos fatos e fundamentos a seguir expostos.";
-  h+=`<p>${emface}</p>`;
+  h+=`<p>em face de ${listaCom(reus,"e")}, pelos fatos e fundamentos a seguir expostos.</p>`;
   return h;
 }
 function buildTXT(){
@@ -278,21 +262,6 @@ function buildTXT(){
   return tmp.textContent.replace(/\n{3,}/g,"\n\n").trim();
 }
 function renderOut(){document.getElementById("preview").innerHTML=buildHTML(); save();}
-
-/* ================= FORM POLO ATIVO ================= */
-function renderNat(){
-  document.querySelectorAll(".nat").forEach(b=>b.classList.toggle("on",b.dataset.nat===state.nat));
-  document.getElementById("ativoPJ").style.display = state.nat==="fidc"?"none":"block";
-  document.getElementById("ativoFIDC").style.display = state.nat==="fidc"?"block":"none";
-}
-document.querySelectorAll(".nat").forEach(b=>{
-  b.onclick=()=>{state.nat=b.dataset.nat; renderNat(); renderOut();};
-});
-document.querySelectorAll("[data-a]").forEach(inp=>{
-  inp.value=state.ativo[inp.dataset.a]||"";
-  if(inp.tagName==="SELECT" && state.ativo[inp.dataset.a]!==undefined) inp.value=state.ativo[inp.dataset.a];
-  inp.oninput=inp.onchange=()=>{state.ativo[inp.dataset.a]=inp.value; renderOut();};
-});
 
 /* ================= FORM AÇÃO ================= */
 const acaoTipo=document.getElementById("acaoTipo"), acaoOutra=document.getElementById("acaoOutra"),
@@ -304,12 +273,68 @@ acaoOutra.oninput=()=>{state.acao.outra=acaoOutra.value; renderOut();};
 juizo.oninput=()=>{state.acao.juizo=juizo.value; renderOut();};
 syncAcaoUI();
 
+/* ================= CAMPOS POR TIPO ================= */
+const CAMPOS_PJ=[["razao","Razão social","Ex.: Empresa Ltda."],["cnpj","CNPJ","00.000.000/0001-00"],["cep","CEP","00.000-000"],["end","Sede (logradouro, nº, complemento, bairro)","Rua Tal, nº 100, Sala 1, Centro"],["cidade","Município/UF","Cidade/UF"]];
+const CAMPOS_FIDC=[["fnome","Nome do fundo","Ex.: FIDC XYZ Multissetorial"],["fcnpj","CNPJ do fundo","00.000.000/0001-00"],["__fcond","Forma de condomínio",""],["anome","Administradora — razão social","Ex.: ABC Administradora Ltda."],["acnpj","Administradora — CNPJ","00.000.000/0001-00"],["acep","Administradora — CEP","00.000-000"],["aend","Administradora — sede","Av. Tal, nº 500, 10º andar, Bairro"],["acidade","Administradora — Município/UF","São Paulo/SP"],["gestora","Gestora (opcional) — razão social e CNPJ","Ex.: DEF Gestora Ltda., CNPJ 00.000.000/0001-00"]];
+const CAMPOS_PF=[["nome","Nome completo","Ex.: João da Silva"],["cpf","CPF","000.000.000-00"],["nac","Nacionalidade","brasileiro(a)"],["estciv","Estado civil","casado(a)"],["prof","Profissão","empresário(a)"],["end","Residência (logradouro, nº, bairro)","Rua Tal, nº 300, Bairro"],["cidade","Município/UF","Cidade/UF"],["cep","CEP","00.000-000"]];
+const CAMPOS_EI=[["firma","Nome empresarial (firma)","Ex.: João da Silva ME"],["cnpj","CNPJ da firma","00.000.000/0001-00"],["endcom","Endereço comercial","Rua Tal, nº 400, Centro"],["cidade","Município/UF (comercial)","Cidade/UF"],["cep","CEP (comercial)","00.000-000"],["nome","Nome do titular (pessoa física)","Ex.: João da Silva"],["cpf","CPF do titular","000.000.000-00"],["nac","Nacionalidade","brasileiro(a)"],["estciv","Estado civil","casado(a)"],["prof","Profissão","empresário(a)"],["end","Residência do titular","Rua Tal, nº 300, Bairro"],["cidaderes","Município/UF (residência)","Cidade/UF"],["cepres","CEP (residência)","00.000-000"]];
+function camposDoTipo(t){
+  if(t==="fidc") return CAMPOS_FIDC;
+  if(t==="pf") return CAMPOS_PF;
+  if(t==="ei") return CAMPOS_EI;
+  return CAMPOS_PJ; /* sec, fac, pj */
+}
+function precisaGenero(t){return t==="pf"||t==="ei";}
+
+/* ================= FORM POLO ATIVO (autores) ================= */
+function renderAutores(){
+  const w=document.getElementById("autoresWrap"); w.innerHTML="";
+  state.autores.forEach((a,idx)=>{
+    const d=document.createElement("div"); d.className="reu";
+    let head=`<div class="rhead"><span class="rtitle">${idx+1}º autor</span>`;
+    if(state.autores.length>1) head+=`<button class="del" data-dela="${idx}">remover</button>`;
+    head+=`</div>`;
+    head+=`<button class="docbtn" data-doca="${idx}">📄 Ler documentos e preencher este autor (cartão CNPJ, contrato, regulamento…)</button><div class="docstatus" id="docst-a-${idx}"></div>`;
+    let sel=`<div class="grid2">
+      <div class="field"><label>Tipo</label><select data-ar="${idx}" data-k="__tipo">${TIPOS_AUTOR.map(([v,l])=>`<option value="${v}"${a.tipo===v?" selected":""}>${l}</option>`).join("")}</select></div>
+      <div class="field"${precisaGenero(a.tipo)?"":' style="visibility:hidden"'}><label>Gênero (PF)</label><select data-ar="${idx}" data-k="__genero">
+        <option value="m"${a.genero==="m"?" selected":""}>masculino</option>
+        <option value="f"${a.genero==="f"?" selected":""}>feminino</option></select></div>
+    </div>`;
+    let campos="";
+    camposDoTipo(a.tipo).forEach(([k,lab,ph])=>{
+      if(k==="__fcond"){
+        campos+=`<div class="field"><label>${lab}</label><select data-ar="${idx}" data-k="fcond">
+          <option value="fechado"${(a.c.fcond||"fechado")==="fechado"?" selected":""}>fechado</option>
+          <option value="aberto"${a.c.fcond==="aberto"?" selected":""}>aberto</option>
+          <option value=""${a.c.fcond===""?" selected":""}>não indicar</option></select></div>`;
+      }else{
+        campos+=`<div class="field"><label>${lab}</label><input data-ar="${idx}" data-k="${k}" value="${esc(a.c[k]||"")}" placeholder="${ph}"></div>`;
+      }
+    });
+    d.innerHTML=head+sel+campos;
+    w.appendChild(d);
+  });
+  w.querySelectorAll("[data-ar]").forEach(inp=>{
+    const idx=+inp.dataset.ar, k=inp.dataset.k;
+    inp.oninput=inp.onchange=()=>{
+      const a=state.autores[idx];
+      if(k==="__tipo"){a.tipo=inp.value; renderAutores();}
+      else if(k==="__genero"){a.genero=inp.value;}
+      else a.c[k]=inp.value;
+      renderOut();
+    };
+  });
+  w.querySelectorAll("[data-dela]").forEach(b=>{
+    b.onclick=()=>{state.autores.splice(+b.dataset.dela,1); renderAutores(); renderOut();};
+  });
+  w.querySelectorAll("[data-doca]").forEach(b=>{
+    b.onclick=()=>abrirDocs({kind:"autor",idx:+b.dataset.doca});
+  });
+}
+document.getElementById("addAutor").onclick=()=>{state.autores.push(novoAutor()); renderAutores(); renderOut();};
+
 /* ================= FORM RÉUS ================= */
-const CAMPOS_REU={
-  pj:[["razao","Razão social","Ex.: Empresa Devedora Ltda.",1],["cnpj","CNPJ","00.000.000/0001-00"],["cep","CEP","00.000-000"],["end","Sede (logradouro, nº, bairro)","Rua Tal, nº 200, Centro",1],["cidade","Município/UF","Cidade/UF"]],
-  pf:[["nome","Nome completo","Ex.: João da Silva",1],["cpf","CPF","000.000.000-00"],["nac","Nacionalidade","brasileiro(a)"],["estciv","Estado civil","casado(a)"],["prof","Profissão","empresário(a)"],["end","Residência (logradouro, nº, bairro)","Rua Tal, nº 300, Bairro",1],["cidade","Município/UF","Cidade/UF"],["cep","CEP","00.000-000"]],
-  ei:[["firma","Nome empresarial (firma)","Ex.: João da Silva ME",1],["cnpj","CNPJ da firma","00.000.000/0001-00"],["endcom","Endereço comercial","Rua Tal, nº 400, Centro",1],["cidade","Município/UF (comercial)","Cidade/UF"],["cep","CEP (comercial)","00.000-000"],["nome","Nome do titular (pessoa física)","Ex.: João da Silva",1],["cpf","CPF do titular","000.000.000-00"],["nac","Nacionalidade","brasileiro(a)"],["estciv","Estado civil","casado(a)"],["prof","Profissão","empresário(a)"],["end","Residência do titular","Rua Tal, nº 300, Bairro",1],["cidaderes","Município/UF (residência)","Cidade/UF"],["cepres","CEP (residência)","00.000-000"]]
-};
 function renderReus(){
   const w=document.getElementById("reusWrap"); w.innerHTML="";
   state.reus.forEach((r,idx)=>{
@@ -317,7 +342,7 @@ function renderReus(){
     let head=`<div class="rhead"><span class="rtitle">${idx+1}º devedor</span>`;
     if(state.reus.length>1) head+=`<button class="del" data-del="${idx}">remover</button>`;
     head+=`</div>`;
-    head+=`<button class="docbtn" data-doc="${idx}">📄 Ler documentos e preencher este devedor</button><div class="docstatus" id="docst-${idx}"></div>`;
+    head+=`<button class="docbtn" data-doc="${idx}">📄 Ler documentos e preencher este devedor</button><div class="docstatus" id="docst-r-${idx}"></div>`;
     let selTipo=`<div class="grid3">
       <div class="field"><label>Tipo</label><select data-r="${idx}" data-k="__tipo">
         <option value="pj"${r.tipo==="pj"?" selected":""}>Pessoa jurídica</option>
@@ -330,7 +355,7 @@ function renderReus(){
         <option value="f"${r.genero==="f"?" selected":""}>feminino</option></select></div>
     </div>`;
     let campos="";
-    CAMPOS_REU[r.tipo].forEach(([k,lab,ph,full])=>{
+    camposDoTipo(r.tipo==="pj"?"pj":r.tipo).forEach(([k,lab,ph])=>{
       campos+=`<div class="field"><label>${lab}</label><input data-r="${idx}" data-k="${k}" value="${esc(r.c[k]||"")}" placeholder="${ph}"></div>`;
     });
     d.innerHTML=head+selTipo+campos;
@@ -368,7 +393,6 @@ async function copyFmt(){
     })]);
     flashCopied(); return;
   }catch(e){}
-  /* fallback: seleção de um nó oculto */
   const div=document.createElement("div");
   div.contentEditable="true"; div.style.position="fixed"; div.style.left="-9999px";
   div.innerHTML=html; document.body.appendChild(div);
@@ -393,12 +417,11 @@ document.getElementById("btnReset").onclick=()=>{
   bg.classList.add("show");
   document.getElementById("modalYes").onclick=()=>{
     bg.classList.remove("show");
-    state={acao:{tipo:"Execução de Título Extrajudicial",outra:"",juizo:""},nat:"sec",ativo:{},reus:[novoReu()]};
-    try{localStorage.removeItem(KEY);}catch(e){}
+    state={acao:{tipo:"Execução de Título Extrajudicial",outra:"",juizo:""},autores:[novoAutor()],reus:[novoReu()]};
+    try{localStorage.removeItem(KEY);localStorage.removeItem("fa_qualif_v1");}catch(e){}
     save();
     acaoTipo.value=state.acao.tipo; acaoOutra.value=""; juizo.value="";
-    document.querySelectorAll("[data-a]").forEach(i=>{if(i.tagName!=="SELECT")i.value="";});
-    syncAcaoUI(); renderNat(); renderReus(); renderOut();
+    syncAcaoUI(); renderAutores(); renderReus(); renderOut();
     window.scrollTo({top:0,behavior:"smooth"});
   };
   document.getElementById("modalNo").onclick=()=>bg.classList.remove("show");
@@ -418,13 +441,12 @@ docInput.type="file"; docInput.accept="application/pdf,.pdf"; docInput.multiple=
 document.body.appendChild(docInput);
 
 function abrirDocs(target){ docTarget=target; docInput.value=""; docInput.click(); }
-document.getElementById("docAtivo").onclick=()=>abrirDocs({kind:"ativo"});
-
-function statusEl(){ return document.getElementById(docTarget.kind==="ativo"?"docst-ativo":"docst-"+docTarget.idx); }
+function statusEl(){ return document.getElementById(docTarget.kind==="autor"?"docst-a-"+docTarget.idx:"docst-r-"+docTarget.idx); }
 
 docInput.addEventListener("change", async ()=>{
   const files=[...docInput.files]; docInput.value="";
   if(!files.length || !docTarget) return;
+  const alvo=docTarget;
   const st=statusEl(); if(st) st.innerHTML="Lendo "+files.length+" documento(s)…";
   try{
     let texto="", ilegiveis=[];
@@ -435,17 +457,18 @@ docInput.addEventListener("change", async ()=>{
     let msg="";
     if(texto){
       const dados=extrairDados(texto);
-      const preenchidos = docTarget.kind==="ativo" ? aplicarAtivo(dados) : aplicarReu(dados, state.reus[docTarget.idx]);
-      if(docTarget.kind==="ativo"){ document.querySelectorAll("[data-a]").forEach(inp=>{ inp.value=state.ativo[inp.dataset.a]||inp.value; }); }
-      renderReus(); renderNat(); renderOut();
+      const preenchidos = alvo.kind==="autor" ? aplicarAutor(dados, state.autores[alvo.idx]) : aplicarReu(dados, state.reus[alvo.idx]);
+      renderAutores(); renderReus(); renderOut();
       msg = preenchidos.length
         ? `<b>✓ Preenchi:</b> ${preenchidos.join(", ")}. Confira cada dado com o documento antes de usar.`
         : `Não encontrei dados novos para preencher (os campos já preenchidos não são sobrescritos).`;
     }
     if(ilegiveis.length) msg+=`<div class="warn">⚠ Sem texto legível (provável escaneado sem OCR): ${ilegiveis.map(esc).join(", ")}.</div>`;
-    if(st) st.innerHTML=msg||"Nada lido.";
+    const st2=document.getElementById(alvo.kind==="autor"?"docst-a-"+alvo.idx:"docst-r-"+alvo.idx);
+    if(st2) st2.innerHTML=msg||"Nada lido.";
   }catch(e){
-    if(st) st.innerHTML=`<span class="warn">Falha ao ler: ${esc(e.message||e)}</span>`;
+    const st2=document.getElementById(alvo.kind==="autor"?"docst-a-"+alvo.idx:"docst-r-"+alvo.idx);
+    if(st2) st2.innerHTML=`<span class="warn">Falha ao ler: ${esc(e.message||e)}</span>`;
   }
   docTarget=null;
 });
@@ -473,7 +496,7 @@ function limpa(s){return String(s||"").replace(/\s+/g," ").replace(/[|•]+/g," 
 
 /* ---- extração por heurística (cartão CNPJ, contratos, regulamentos, docs com qualificação) ---- */
 function extrairDados(texto){
-  const T=texto.replace(/ /g," ");
+  const T=texto.replace(/ /g," ");
   const flat=T.replace(/\s+/g," ");
   const d={};
 
@@ -483,7 +506,6 @@ function extrairDados(texto){
   d.ceps=[...new Set((flat.match(/\b\d{2}\.?\d{3}-\d{3}\b/g)||[]).map(fmtCEP))];
 
   /* cartão CNPJ da Receita: campos rotulados */
-  const rot=(nomes)=>{ for(const n of nomes){ const m=flat.match(new RegExp(n+"\\s*[:\\-]?\\s*([^\\n]{2,90}?)(?=\\s{2,}|\\s[A-ZÇÃÕÉÍ]{3,}\\s*[:\\-]|$)","i")); if(m) return limpa(m[1]); } return ""; };
   const mNomeEmp=T.match(/NOME EMPRESARIAL\s*\n?\s*([A-ZÀ-Ü0-9][^\n]{3,110})/i);
   if(mNomeEmp) d.razao=limpa(mNomeEmp[1]);
   const mLogr=T.match(/LOGRADOURO\s*\n?\s*([^\n]{3,90})/i);
@@ -534,26 +556,54 @@ function extrairDados(texto){
 
 function setSeVazio(obj,k,v,rot,lista){ if(v && !obj[k]){ obj[k]=v; lista.push(rot); } }
 
-function aplicarAtivo(d){
-  const out=[]; const a=state.ativo;
-  const pareceFundo = !!d.fundo || state.nat==="fidc";
-  if(d.fundo && state.nat!=="fidc"){ state.nat="fidc"; out.push("tipo → FIDC"); }
-  if(pareceFundo){
-    setSeVazio(a,"fnome",d.fundo,"nome do fundo",out);
-    if(d.cnpjs[0]) setSeVazio(a,"fcnpj",d.cnpjs[0],"CNPJ do fundo",out);
-    setSeVazio(a,"anome",d.admin,"administradora",out);
-    if(d.cnpjs[1]) setSeVazio(a,"acnpj",d.cnpjs[1],"CNPJ da administradora",out);
-    if(d.condominio && !a.fcond){ a.fcond=d.condominio; out.push("condomínio "+d.condominio); }
-    setSeVazio(a,"aend",d.endereco||d.enderecoExtenso,"sede da administradora",out);
-    setSeVazio(a,"acidade",d.cidade,"município/UF",out);
-    if(d.ceps[0]) setSeVazio(a,"acep",d.ceps[0],"CEP",out);
-  }else{
-    setSeVazio(a,"razao",d.razao,"razão social",out);
-    if(d.cnpjs[0]) setSeVazio(a,"cnpj",d.cnpjs[0],"CNPJ",out);
-    setSeVazio(a,"end",d.endereco||d.enderecoExtenso,"sede",out);
-    setSeVazio(a,"cidade",d.cidade,"município/UF",out);
-    if(d.ceps[0]) setSeVazio(a,"cep",d.ceps[0],"CEP",out);
+function aplicarAutor(d,a){
+  const out=[]; const c=a.c;
+  const temPJ=!!(d.razao||d.cnpjs.length), temPF=!!(d.nomePF||d.cpfs.length);
+  if(d.fundo && a.tipo!=="fidc"){ a.tipo="fidc"; out.push("tipo → FIDC"); }
+  if(a.tipo==="fidc"){
+    setSeVazio(c,"fnome",d.fundo,"nome do fundo",out);
+    if(d.cnpjs[0]) setSeVazio(c,"fcnpj",d.cnpjs[0],"CNPJ do fundo",out);
+    setSeVazio(c,"anome",d.admin,"administradora",out);
+    if(d.cnpjs[1]) setSeVazio(c,"acnpj",d.cnpjs[1],"CNPJ da administradora",out);
+    if(d.condominio && !c.fcond){ c.fcond=d.condominio; out.push("condomínio "+d.condominio); }
+    setSeVazio(c,"aend",d.endereco||d.enderecoExtenso,"sede da administradora",out);
+    setSeVazio(c,"acidade",d.cidade,"município/UF",out);
+    if(d.ceps[0]) setSeVazio(c,"acep",d.ceps[0],"CEP",out);
+    return out;
   }
+  if(temPJ&&temPF&&a.tipo!=="ei"&&!["sec","fac","pj"].includes(a.tipo)){ a.tipo="ei"; out.push("tipo → empresário individual"); }
+  if(a.tipo==="pf"){
+    setSeVazio(c,"nome",d.nomePF,"nome",out);
+    if(d.cpfs[0]) setSeVazio(c,"cpf",d.cpfs[0],"CPF",out);
+    setSeVazio(c,"nac",d.nac,"nacionalidade",out);
+    setSeVazio(c,"estciv",d.estciv,"estado civil",out);
+    setSeVazio(c,"prof",d.prof,"profissão",out);
+    setSeVazio(c,"end",d.enderecoExtenso||d.endereco,"residência",out);
+    setSeVazio(c,"cidade",d.cidade,"município/UF",out);
+    if(d.ceps[0]) setSeVazio(c,"cep",d.ceps[0],"CEP",out);
+    return out;
+  }
+  if(a.tipo==="ei"){
+    setSeVazio(c,"firma",d.razao,"firma",out);
+    if(d.cnpjs[0]) setSeVazio(c,"cnpj",d.cnpjs[0],"CNPJ da firma",out);
+    setSeVazio(c,"endcom",d.endereco,"endereço comercial",out);
+    setSeVazio(c,"cidade",d.cidade,"município/UF",out);
+    if(d.ceps[0]) setSeVazio(c,"cep",d.ceps[0],"CEP",out);
+    setSeVazio(c,"nome",d.nomePF,"titular",out);
+    if(d.cpfs[0]) setSeVazio(c,"cpf",d.cpfs[0],"CPF do titular",out);
+    setSeVazio(c,"nac",d.nac,"nacionalidade",out);
+    setSeVazio(c,"estciv",d.estciv,"estado civil",out);
+    setSeVazio(c,"prof",d.prof,"profissão",out);
+    setSeVazio(c,"end",d.enderecoExtenso,"residência do titular",out);
+    if(d.ceps[1]) setSeVazio(c,"cepres",d.ceps[1],"CEP residencial",out);
+    return out;
+  }
+  /* sec, fac, pj */
+  setSeVazio(c,"razao",d.razao,"razão social",out);
+  if(d.cnpjs[0]) setSeVazio(c,"cnpj",d.cnpjs[0],"CNPJ",out);
+  setSeVazio(c,"end",d.endereco||d.enderecoExtenso,"sede",out);
+  setSeVazio(c,"cidade",d.cidade,"município/UF",out);
+  if(d.ceps[0]) setSeVazio(c,"cep",d.ceps[0],"CEP",out);
   return out;
 }
 
@@ -596,7 +646,7 @@ function aplicarReu(d,r){
 }
 
 /* ================= INIT ================= */
-renderNat(); renderReus(); renderOut();
+renderAutores(); renderReus(); renderOut();
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
 </body>
