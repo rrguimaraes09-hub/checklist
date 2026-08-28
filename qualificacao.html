@@ -30,6 +30,15 @@
     background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.28);
     padding:7px 14px;border-radius:20px;cursor:pointer}
   .clearTop:hover{background:rgba(255,255,255,.18);border-color:var(--gold)}
+  a.clearTop{text-decoration:none;margin-left:auto}
+  a.clearTop + .clearTop{margin-left:0}
+  .docbtn{width:100%;margin:0 0 12px;padding:9px 12px;border:1.5px dashed #b9c6dd;background:#f4f7fc;
+    border-radius:9px;color:var(--navy);font-weight:700;font-size:12.5px;cursor:pointer;font-family:inherit}
+  .docbtn:hover{border-color:var(--navy)}
+  .docbtn:disabled{opacity:.6;cursor:wait}
+  .docstatus{font-size:11.5px;color:var(--muted);margin:-6px 0 10px;line-height:1.45}
+  .docstatus b{color:#1f7a4d}
+  .docstatus .warn{color:#8a6100}
   .masthead h1{margin:0;padding:4px 24px 14px;font-size:19px;font-weight:700}
   .goldbar{height:4px;background:var(--gold)}
 
@@ -99,7 +108,8 @@
     <div class="top">
       <div class="monogram">F|A</div>
       <div class="firm">Felipe Albuquerque Advocacia<small>Ferramenta interna</small></div>
-      <button class="clearTop" id="btnReset">↺ Recomeçar</button>
+      <a class="clearTop" href="https://rrguimaraes09-hub.github.io/">⌂ Espaço do Cliente</a>
+      <button class="clearTop" id="btnReset" style="margin-left:0">↺ Recomeçar</button>
     </div>
     <h1>Gerador de Qualificação das Partes</h1>
     <div class="goldbar"></div>
@@ -127,6 +137,8 @@
 
       <div class="card">
         <h2>Polo ativo (credor)</h2>
+        <button class="docbtn" id="docAtivo">📄 Ler documentos e preencher (cartão CNPJ, contrato, regulamento…)</button>
+        <div class="docstatus" id="docst-ativo"></div>
         <div class="nat-grid">
           <button class="nat" data-nat="sec">Securitizadora<small>PJ com CNPJ próprio</small></button>
           <button class="nat" data-nat="fidc">FIDC<small>condomínio · Res. CVM 175/2022</small></button>
@@ -178,7 +190,7 @@
           <button class="btn ghost" id="btnCopyTxt">Copiar texto puro</button>
           <span class="copied" id="copiedMsg">✓ Copiado!</span>
         </div>
-        <div class="hint">“Copiar com formatação” preserva os negritos ao colar no Word. Os dados ficam salvos automaticamente neste computador.</div>
+        <div class="hint">“Copiar com formatação” preserva os negritos ao colar no Word. Os dados digitados ficam salvos automaticamente neste computador. Os <b>documentos enviados</b> são lidos apenas aqui no navegador, na hora, e <b>descartados em seguida</b> — nenhum arquivo é salvo ou enviado a servidor.</div>
       </div>
     </div>
   </div>
@@ -247,7 +259,7 @@ function buildHTML(){
   const nomeAcao = state.acao.tipo==="outra" ? (state.acao.outra||"[NOME DA AÇÃO]") : state.acao.tipo;
   let h="";
   if(state.acao.juizo) h+=`<p class="end noind">AO JUÍZO DE DIREITO DA ${caps(state.acao.juizo).replace(/^(A |AO |DA |DE )/,"")}.</p><p class="noind">&nbsp;</p>`;
-  h+=`<p>${ativoHTML()}, vem, respeitosamente, à presença de Vossa Excelência, por meio de seu procurador que a esta subscreve, propor a presente</p>`;
+  h+=`<p>${ativoHTML()}, vem respeitosamente à presença de Vossa Excelência, por meio de seus procuradores que a esta subscrevem, propor a presente</p>`;
   h+=`<p class="acao noind">${caps(nomeAcao)}</p>`;
   const reus=state.reus.map(reuHTML);
   let emface="em face de ";
@@ -305,6 +317,7 @@ function renderReus(){
     let head=`<div class="rhead"><span class="rtitle">${idx+1}º devedor</span>`;
     if(state.reus.length>1) head+=`<button class="del" data-del="${idx}">remover</button>`;
     head+=`</div>`;
+    head+=`<button class="docbtn" data-doc="${idx}">📄 Ler documentos e preencher este devedor</button><div class="docstatus" id="docst-${idx}"></div>`;
     let selTipo=`<div class="grid3">
       <div class="field"><label>Tipo</label><select data-r="${idx}" data-k="__tipo">
         <option value="pj"${r.tipo==="pj"?" selected":""}>Pessoa jurídica</option>
@@ -336,6 +349,9 @@ function renderReus(){
   });
   w.querySelectorAll("[data-del]").forEach(b=>{
     b.onclick=()=>{state.reus.splice(+b.dataset.del,1); renderReus(); renderOut();};
+  });
+  w.querySelectorAll("[data-doc]").forEach(b=>{
+    b.onclick=()=>abrirDocs({kind:"reu",idx:+b.dataset.doc});
   });
 }
 document.getElementById("addReu").onclick=()=>{state.reus.push(novoReu()); renderReus(); renderOut();};
@@ -389,8 +405,199 @@ document.getElementById("btnReset").onclick=()=>{
   bg.onclick=e=>{if(e.target===bg)bg.classList.remove("show");};
 };
 
+/* =========================================================================
+   LEITURA DE DOCUMENTOS (pdf.js) — preenche os campos a partir de PDFs.
+   PRIVACIDADE: os arquivos são lidos SOMENTE neste navegador, em memória,
+   e descartados ao fim da leitura. Nada é salvo em disco nem enviado a
+   servidor algum. Funciona com PDF que tenha texto (nato-digital); PDF
+   escaneado sem OCR é avisado como ilegível.
+   ========================================================================= */
+let docTarget=null;
+const docInput=document.createElement("input");
+docInput.type="file"; docInput.accept="application/pdf,.pdf"; docInput.multiple=true; docInput.style.display="none";
+document.body.appendChild(docInput);
+
+function abrirDocs(target){ docTarget=target; docInput.value=""; docInput.click(); }
+document.getElementById("docAtivo").onclick=()=>abrirDocs({kind:"ativo"});
+
+function statusEl(){ return document.getElementById(docTarget.kind==="ativo"?"docst-ativo":"docst-"+docTarget.idx); }
+
+docInput.addEventListener("change", async ()=>{
+  const files=[...docInput.files]; docInput.value="";
+  if(!files.length || !docTarget) return;
+  const st=statusEl(); if(st) st.innerHTML="Lendo "+files.length+" documento(s)…";
+  try{
+    let texto="", ilegiveis=[];
+    for(const f of files){
+      const t=await lerPDF(f);
+      if(t.replace(/\s+/g,"").length<40) ilegiveis.push(f.name); else texto+="\n\n===ARQ:"+f.name+"===\n"+t;
+    }
+    let msg="";
+    if(texto){
+      const dados=extrairDados(texto);
+      const preenchidos = docTarget.kind==="ativo" ? aplicarAtivo(dados) : aplicarReu(dados, state.reus[docTarget.idx]);
+      if(docTarget.kind==="ativo"){ document.querySelectorAll("[data-a]").forEach(inp=>{ inp.value=state.ativo[inp.dataset.a]||inp.value; }); }
+      renderReus(); renderNat(); renderOut();
+      msg = preenchidos.length
+        ? `<b>✓ Preenchi:</b> ${preenchidos.join(", ")}. Confira cada dado com o documento antes de usar.`
+        : `Não encontrei dados novos para preencher (os campos já preenchidos não são sobrescritos).`;
+    }
+    if(ilegiveis.length) msg+=`<div class="warn">⚠ Sem texto legível (provável escaneado sem OCR): ${ilegiveis.map(esc).join(", ")}.</div>`;
+    if(st) st.innerHTML=msg||"Nada lido.";
+  }catch(e){
+    if(st) st.innerHTML=`<span class="warn">Falha ao ler: ${esc(e.message||e)}</span>`;
+  }
+  docTarget=null;
+});
+
+async function lerPDF(file){
+  if(!window.pdfjsLib) throw new Error("Leitor de PDF não carregou — confira a internet e recarregue a página.");
+  pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+  const buf=await file.arrayBuffer();
+  const pdf=await pdfjsLib.getDocument({data:buf}).promise;
+  let out="";
+  const maxPag=Math.min(pdf.numPages,20);
+  for(let p=1;p<=maxPag;p++){
+    const page=await pdf.getPage(p);
+    const tc=await page.getTextContent();
+    out+=tc.items.map(i=>i.str).join(" ")+"\n";
+  }
+  return out;
+}
+
+/* ---- formatadores ---- */
+function fmtCNPJ(d){d=d.replace(/\D/g,"");return d.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/,"$1.$2.$3/$4-$5");}
+function fmtCPF(d){d=d.replace(/\D/g,"");return d.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/,"$1.$2.$3-$4");}
+function fmtCEP(d){d=d.replace(/\D/g,"");return d.replace(/^(\d{5})(\d{3})$/,"$1-$2");}
+function limpa(s){return String(s||"").replace(/\s+/g," ").replace(/[|•]+/g," ").trim().replace(/[,.;:]+$/,"");}
+
+/* ---- extração por heurística (cartão CNPJ, contratos, regulamentos, docs com qualificação) ---- */
+function extrairDados(texto){
+  const T=texto.replace(/ /g," ");
+  const flat=T.replace(/\s+/g," ");
+  const d={};
+
+  d.cnpjs=[...new Set((flat.match(/\d{2}\.?\d{3}\.?\d{3}\/\d{4}-?\d{2}/g)||[]).map(fmtCNPJ))];
+  const semCnpj=flat.replace(/\d{2}\.?\d{3}\.?\d{3}\/\d{4}-?\d{2}/g," ");
+  d.cpfs=[...new Set((semCnpj.match(/\d{3}\.\d{3}\.\d{3}-?\d{2}/g)||[]).map(fmtCPF))];
+  d.ceps=[...new Set((flat.match(/\b\d{2}\.?\d{3}-\d{3}\b/g)||[]).map(fmtCEP))];
+
+  /* cartão CNPJ da Receita: campos rotulados */
+  const rot=(nomes)=>{ for(const n of nomes){ const m=flat.match(new RegExp(n+"\\s*[:\\-]?\\s*([^\\n]{2,90}?)(?=\\s{2,}|\\s[A-ZÇÃÕÉÍ]{3,}\\s*[:\\-]|$)","i")); if(m) return limpa(m[1]); } return ""; };
+  const mNomeEmp=T.match(/NOME EMPRESARIAL\s*\n?\s*([A-ZÀ-Ü0-9][^\n]{3,110})/i);
+  if(mNomeEmp) d.razao=limpa(mNomeEmp[1]);
+  const mLogr=T.match(/LOGRADOURO\s*\n?\s*([^\n]{3,90})/i);
+  const mNum=T.match(/N[ÚU]MERO(?!\s+DE\s+INSCRI)\s*\n?\s*(?!DE\s+INSCRI)([^\n]{1,15})/i);
+  const mCompl=T.match(/COMPLEMENTO\s*\n?\s*([^\n]{1,40})/i);
+  const mBairro=T.match(/BAIRRO\s*\/?\s*DISTRITO\s*\n?\s*([^\n]{2,50})/i)||T.match(/BAIRRO\s*\n?\s*([^\n]{2,50})/i);
+  const mMun=T.match(/MUNIC[ÍI]PIO\s*\n?\s*([^\n]{2,50})/i);
+  const mUF=T.match(/\bUF\b\s*\n?\s*([A-Z]{2})\b/);
+  if(mLogr){
+    const compl=mCompl&&!/\*{2,}|N\/?A|NAO CONSTA/i.test(mCompl[1])?", "+limpa(mCompl[1]):"";
+    d.endereco=limpa(mLogr[1])+(mNum?", nº "+limpa(mNum[1]):"")+compl+(mBairro?", "+limpa(mBairro[1]):"");
+  }
+  if(mMun) d.cidade=limpa(mMun[1])+(mUF?"/"+mUF[1]:"");
+
+  /* razão social por sufixo societário (contratos), se o cartão não deu */
+  if(!d.razao){
+    const m=flat.match(/([A-ZÀ-Ü][A-ZÀ-Ü0-9&'.\- ]{4,90}?\s(?:LTDA\.?|S\.?\/?A\.?|S\.?A\.?|EIRELI|SS|ME|EPP)\b)/);
+    if(m) d.razao=limpa(m[1]);
+  }
+
+  /* endereço por extenso ("com sede na ..." / "residente e domiciliado na ...") */
+  if(!d.endereco){
+    const m=flat.match(/(?:com sede|estabelecid[oa]|residente e domiciliad[oa]|domiciliad[oa])\s+(?:n[ao]|em|à|a)\s+([^,]{4,80}(?:,\s*(?:n[ºo°]?\.?\s*)?[\dSN\/]{1,8}[^,]{0,30})?(?:,\s*[^,]{2,40}){0,3})/i);
+    if(m) d.enderecoExtenso=limpa(m[1]);
+  }
+  const mCid=flat.match(/([A-ZÀ-Ü][a-zà-ü'\- ]{2,30}(?:\s[A-ZÀ-Ü][a-zà-ü'\- ]{2,30}){0,3})\s*[\/\-]\s*(AC|AL|AP|AM|BA|CE|DF|ES|GO|MA|MT|MS|MG|PA|PB|PR|PE|PI|RJ|RN|RS|RO|RR|SC|SP|SE|TO)\b/);
+  if(!d.cidade && mCid) d.cidade=limpa(mCid[1])+"/"+mCid[2];
+
+  /* FIDC e administradora */
+  const mFundo=flat.match(/([A-ZÀ-Ü0-9][A-ZÀ-Ü0-9&'.\- ]{0,80}FUNDO DE INVESTIMENTO EM DIREITOS CREDIT[ÓO]RIOS[A-ZÀ-Ü0-9&'.\- ]{0,60})/i);
+  if(mFundo) d.fundo=limpa(mFundo[1]);
+  const mAdm=flat.match(/administrad[oa](?:ra)?\s*(?:por|:)?\s*(?:pela\s+)?([A-ZÀ-Ü][A-ZÀ-Ü0-9&'.\- ]{4,90}?(?:LTDA\.?|S\.?\/?A\.?|S\.?A\.?|DTVM|CTVM)\b)/i);
+  if(mAdm) d.admin=limpa(mAdm[1]);
+  if(/condom[íi]nio\s+fechado/i.test(flat)) d.condominio="fechado";
+  else if(/condom[íi]nio\s+aberto/i.test(flat)) d.condominio="aberto";
+
+  /* pessoa física: qualificação por extenso */
+  const mQ=flat.match(/brasileir[oa]\s*,\s*([a-zà-ü() ]{4,30})\s*,\s*([a-zà-üà-ü() \-]{3,40})\s*,/i);
+  if(mQ){ d.estciv=limpa(mQ[1]); d.prof=limpa(mQ[2]); d.nac=/brasileira/i.test(flat)&&!/brasileiro/i.test(flat)?"brasileira":"brasileiro"; }
+  const mNomePF=flat.match(/\b(?:NOME|Nome completo)\s*[:\-]\s*([A-ZÀ-Ü][A-Za-zÀ-ü' ]{5,60})/);
+  if(mNomePF) d.nomePF=limpa(mNomePF[1]);
+  if(!d.nomePF){
+    const m=flat.match(/([A-ZÀ-Ü][A-ZÀ-Ü' ]{6,60}?)\s*,\s*brasileir[oa]\b/);
+    if(m) d.nomePF=limpa(m[1]);
+  }
+  return d;
+}
+
+function setSeVazio(obj,k,v,rot,lista){ if(v && !obj[k]){ obj[k]=v; lista.push(rot); } }
+
+function aplicarAtivo(d){
+  const out=[]; const a=state.ativo;
+  const pareceFundo = !!d.fundo || state.nat==="fidc";
+  if(d.fundo && state.nat!=="fidc"){ state.nat="fidc"; out.push("tipo → FIDC"); }
+  if(pareceFundo){
+    setSeVazio(a,"fnome",d.fundo,"nome do fundo",out);
+    if(d.cnpjs[0]) setSeVazio(a,"fcnpj",d.cnpjs[0],"CNPJ do fundo",out);
+    setSeVazio(a,"anome",d.admin,"administradora",out);
+    if(d.cnpjs[1]) setSeVazio(a,"acnpj",d.cnpjs[1],"CNPJ da administradora",out);
+    if(d.condominio && !a.fcond){ a.fcond=d.condominio; out.push("condomínio "+d.condominio); }
+    setSeVazio(a,"aend",d.endereco||d.enderecoExtenso,"sede da administradora",out);
+    setSeVazio(a,"acidade",d.cidade,"município/UF",out);
+    if(d.ceps[0]) setSeVazio(a,"acep",d.ceps[0],"CEP",out);
+  }else{
+    setSeVazio(a,"razao",d.razao,"razão social",out);
+    if(d.cnpjs[0]) setSeVazio(a,"cnpj",d.cnpjs[0],"CNPJ",out);
+    setSeVazio(a,"end",d.endereco||d.enderecoExtenso,"sede",out);
+    setSeVazio(a,"cidade",d.cidade,"município/UF",out);
+    if(d.ceps[0]) setSeVazio(a,"cep",d.ceps[0],"CEP",out);
+  }
+  return out;
+}
+
+function aplicarReu(d,r){
+  const out=[]; const c=r.c;
+  const temPJ=!!(d.razao||d.cnpjs.length), temPF=!!(d.nomePF||d.cpfs.length);
+  if(temPJ&&temPF&&r.tipo!=="ei"){ r.tipo="ei"; out.push("tipo → empresário individual"); }
+  else if(temPJ&&!temPF&&r.tipo==="pf"){ r.tipo="pj"; out.push("tipo → pessoa jurídica"); }
+  else if(temPF&&!temPJ&&r.tipo==="pj"){ r.tipo="pf"; out.push("tipo → pessoa física"); }
+  if(r.tipo==="pj"){
+    setSeVazio(c,"razao",d.razao,"razão social",out);
+    if(d.cnpjs[0]) setSeVazio(c,"cnpj",d.cnpjs[0],"CNPJ",out);
+    setSeVazio(c,"end",d.endereco||d.enderecoExtenso,"sede",out);
+    setSeVazio(c,"cidade",d.cidade,"município/UF",out);
+    if(d.ceps[0]) setSeVazio(c,"cep",d.ceps[0],"CEP",out);
+  }else if(r.tipo==="pf"){
+    setSeVazio(c,"nome",d.nomePF,"nome",out);
+    if(d.cpfs[0]) setSeVazio(c,"cpf",d.cpfs[0],"CPF",out);
+    setSeVazio(c,"nac",d.nac,"nacionalidade",out);
+    setSeVazio(c,"estciv",d.estciv,"estado civil",out);
+    setSeVazio(c,"prof",d.prof,"profissão",out);
+    setSeVazio(c,"end",d.enderecoExtenso||d.endereco,"residência",out);
+    setSeVazio(c,"cidade",d.cidade,"município/UF",out);
+    if(d.ceps[0]) setSeVazio(c,"cep",d.ceps[0],"CEP",out);
+  }else{
+    setSeVazio(c,"firma",d.razao,"firma",out);
+    if(d.cnpjs[0]) setSeVazio(c,"cnpj",d.cnpjs[0],"CNPJ da firma",out);
+    setSeVazio(c,"endcom",d.endereco,"endereço comercial",out);
+    setSeVazio(c,"cidade",d.cidade,"município/UF",out);
+    if(d.ceps[0]) setSeVazio(c,"cep",d.ceps[0],"CEP",out);
+    setSeVazio(c,"nome",d.nomePF,"titular",out);
+    if(d.cpfs[0]) setSeVazio(c,"cpf",d.cpfs[0],"CPF do titular",out);
+    setSeVazio(c,"nac",d.nac,"nacionalidade",out);
+    setSeVazio(c,"estciv",d.estciv,"estado civil",out);
+    setSeVazio(c,"prof",d.prof,"profissão",out);
+    setSeVazio(c,"end",d.enderecoExtenso,"residência do titular",out);
+    if(d.ceps[1]) setSeVazio(c,"cepres",d.ceps[1],"CEP residencial",out);
+  }
+  return out;
+}
+
 /* ================= INIT ================= */
 renderNat(); renderReus(); renderOut();
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
 </body>
 </html>
