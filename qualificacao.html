@@ -492,7 +492,83 @@ async function lerPDF(file){
 function fmtCNPJ(d){d=d.replace(/\D/g,"");return d.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/,"$1.$2.$3/$4-$5");}
 function fmtCPF(d){d=d.replace(/\D/g,"");return d.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/,"$1.$2.$3-$4");}
 function fmtCEP(d){d=d.replace(/\D/g,"");return d.replace(/^(\d{5})(\d{3})$/,"$1-$2");}
-function limpa(s){return String(s||"").replace(/\s+/g," ").replace(/[|•]+/g," ").trim().replace(/[,.;:]+$/,"");}
+function limpa(s){return String(s||"").replace(/\*{2,}/g," ").replace(/\s+/g," ").replace(/[|•]+/g," ").trim().replace(/[,.;:]+$/,"").trim();}
+
+/* ---- prosa: caixa alta do cartão CNPJ → padrão de petição ---- */
+const ACENTOS={"sao":"São","jose":"José","joao":"João","antonio":"Antônio","sebastiao":"Sebastião","estevao":"Estêvão","cristovao":"Cristóvão","conceicao":"Conceição","goncalves":"Gonçalves","goncalo":"Gonçalo","criciuma":"Criciúma","icara":"Içara","tubarao":"Tubarão","ararangua":"Araranguá","sideropolis":"Siderópolis","fumaca":"Fumaça","balneario":"Balneário","florianopolis":"Florianópolis","tramandai":"Tramandaí","gravatai":"Gravataí","brasilia":"Brasília","goiania":"Goiânia","goias":"Goiás","parana":"Paraná","niteroi":"Niterói","maracaja":"Maracajá","comerciario":"Comerciário","operario":"Operário","operaria":"Operária","ferroviario":"Ferroviário","universitario":"Universitário","prospera":"Próspera","gloria":"Glória","vitoria":"Vitória","barbara":"Bárbara","industria":"Indústria","edificio":"Edifício","predio":"Prédio","terreo":"Térreo","condominio":"Condomínio","escritorio":"Escritório","proximo":"Próximo","nucleo":"Núcleo","centenario":"Centenário","rincao":"Rincão","hercilio":"Hercílio","getulio":"Getúlio","julio":"Júlio","eugenio":"Eugênio","otavio":"Otávio","fatima":"Fátima","assuncao":"Assunção","chapeco":"Chapecó","concordia":"Concórdia","itajai":"Itajaí","biguacu":"Biguaçu","palhoca":"Palhoça","camboriu":"Camboriú","jaragua":"Jaraguá","osorio":"Osório","capao":"Capão","ribeirao":"Ribeirão","grao":"Grão"};
+const MINUSC=["de","da","do","das","dos","e","em"];
+function tituloCase(s){
+  s=limpa(s); if(!s) return s;
+  if(/[a-zà-ü]/.test(s)) return s; /* já tem minúscula: não é caixa alta de cartão, não mexe */
+  return s.toLowerCase().split(/\s+/).map((w,i)=>{
+    if(ACENTOS[w]) return ACENTOS[w];
+    if(i>0 && MINUSC.includes(w)) return w;
+    if(/^\d/.test(w)) return w;
+    if(/^(ii|iii|iv|vi|vii|viii|ix|xi|xii)$/.test(w)) return w.toUpperCase();
+    return w.charAt(0).toUpperCase()+w.slice(1);
+  }).join(" ");
+}
+const TIPO_LOGR={"r":"Rua","av":"Avenida","avn":"Avenida","rod":"Rodovia","tv":"Travessa","trv":"Travessa","trav":"Travessa","al":"Alameda","pc":"Praça","pca":"Praça","est":"Estrada","estr":"Estrada","srv":"Servidão","serv":"Servidão","lgo":"Largo","bc":"Beco","vl":"Vila","jd":"Jardim","lot":"Loteamento","pq":"Parque"};
+function prosaLogradouro(s){
+  s=limpa(s); if(!s) return s;
+  const m=s.match(/^([A-Za-zÀ-ü]+)\.?\s+(.+)$/);
+  if(m && TIPO_LOGR[m[1].toLowerCase()]) return TIPO_LOGR[m[1].toLowerCase()]+" "+tituloCase(m[2]);
+  return tituloCase(s);
+}
+function prosaBairro(s){
+  s=tituloCase(s); if(!s) return s;
+  if(/^(bairro|jardim|vila|parque|loteamento|residencial|distrito|centro|n[úu]cleo)\b/i.test(s)) return s;
+  return "Bairro "+s;
+}
+
+/* ---- cartão CNPJ da Receita: extração campo a campo, entre rótulos oficiais ----
+   O texto do PDF vem achatado (sem quebras de linha), então o valor de cada campo
+   é o trecho entre o rótulo dele e o rótulo seguinte. */
+function extraiCartaoRFB(flat){
+  if(!/NOME EMPRESARIAL/i.test(flat) || !/LOGRADOURO/i.test(flat)) return null;
+  const defs=[
+    ["insc","N[ÚU]MERO DE INSCRI[ÇC][ÃA]O"],
+    ["abertura","DATA DE ABERTURA"],
+    ["matrizfil","\\bMATRIZ\\b|\\bFILIAL\\b"],
+    ["razao","NOME EMPRESARIAL"],
+    ["fantasia","T[ÍI]TULO DO ESTABELECIMENTO\\s*\\(?\\s*NOME DE FANTASIA\\s*\\)?|\\(\\s*NOME DE FANTASIA\\s*\\)"],
+    ["porte","\\bPORTE\\b"],
+    ["ativprinc","C[ÓO]DIGO E DESCRI[ÇC][ÃA]O DA ATIVIDADE ECON[ÔO]MICA PRINCIPAL"],
+    ["ativsec","C[ÓO]DIGO E DESCRI[ÇC][ÃA]O DAS ATIVIDADES ECON[ÔO]MICAS SECUND[ÁA]RIAS"],
+    ["natjur","C[ÓO]DIGO E DESCRI[ÇC][ÃA]O DA NATUREZA JUR[ÍI]DICA"],
+    ["logradouro","\\bLOGRADOURO\\b"],
+    ["numero","\\bN[ÚU]MERO\\b(?!\\s+DE\\s+INSCRI)"],
+    ["complemento","\\bCOMPLEMENTO\\b"],
+    ["cep","\\bCEP\\b"],
+    ["bairro","BAIRRO\\s*\\/?\\s*DISTRITO|\\bBAIRRO\\b"],
+    ["municipio","MUNIC[ÍI]PIO"],
+    ["uf","\\bUF\\b"],
+    ["email","ENDERE[ÇC]O ELETR[ÔO]NICO"],
+    ["telefone","\\bTELEFONE\\b"],
+    ["efr","ENTE FEDERATIVO RESPONS[ÁA]VEL(?:\\s*\\(\\s*EFR\\s*\\))?"],
+    ["datasit","DATA DA SITUA[ÇC][ÃA]O CADASTRAL"],
+    ["motivosit","MOTIVO DE SITUA[ÇC][ÃA]O CADASTRAL"],
+    ["sitcad","SITUA[ÇC][ÃA]O CADASTRAL"],
+    ["datasitesp","DATA DA SITUA[ÇC][ÃA]O ESPECIAL"],
+    ["sitesp","SITUA[ÇC][ÃA]O ESPECIAL"],
+    ["emissao","EMITIDO NO DIA|DATA DE EMISS[ÃA]O"]
+  ];
+  const marks=[];
+  defs.forEach(([k,rx])=>{
+    const re=new RegExp(rx,"gi"); let m;
+    while((m=re.exec(flat))) marks.push({k,ini:m.index,fim:m.index+m[0].length});
+  });
+  marks.sort((a,b)=>a.ini-b.ini || b.fim-a.fim);
+  const kept=[]; let lastEnd=-1;
+  marks.forEach(m=>{ if(m.ini>=lastEnd){kept.push(m); lastEnd=m.fim;} });
+  const val={};
+  kept.forEach((m,i)=>{
+    const fimTrecho = i+1<kept.length ? kept[i+1].ini : Math.min(flat.length, m.fim+120);
+    const v=limpa(flat.slice(m.fim, fimTrecho));
+    if(v && !(m.k in val)) val[m.k]=v; /* primeira ocorrência (cartão principal) vence */
+  });
+  return val;
+}
 
 /* ---- extração por heurística (cartão CNPJ, contratos, regulamentos, docs com qualificação) ---- */
 function extrairDados(texto){
@@ -505,20 +581,22 @@ function extrairDados(texto){
   d.cpfs=[...new Set((semCnpj.match(/\d{3}\.\d{3}\.\d{3}-?\d{2}/g)||[]).map(fmtCPF))];
   d.ceps=[...new Set((flat.match(/\b\d{2}\.?\d{3}-\d{3}\b/g)||[]).map(fmtCEP))];
 
-  /* cartão CNPJ da Receita: campos rotulados */
-  const mNomeEmp=T.match(/NOME EMPRESARIAL\s*\n?\s*([A-ZÀ-Ü0-9][^\n]{3,110})/i);
-  if(mNomeEmp) d.razao=limpa(mNomeEmp[1]);
-  const mLogr=T.match(/LOGRADOURO\s*\n?\s*([^\n]{3,90})/i);
-  const mNum=T.match(/N[ÚU]MERO(?!\s+DE\s+INSCRI)\s*\n?\s*(?!DE\s+INSCRI)([^\n]{1,15})/i);
-  const mCompl=T.match(/COMPLEMENTO\s*\n?\s*([^\n]{1,40})/i);
-  const mBairro=T.match(/BAIRRO\s*\/?\s*DISTRITO\s*\n?\s*([^\n]{2,50})/i)||T.match(/BAIRRO\s*\n?\s*([^\n]{2,50})/i);
-  const mMun=T.match(/MUNIC[ÍI]PIO\s*\n?\s*([^\n]{2,50})/i);
-  const mUF=T.match(/\bUF\b\s*\n?\s*([A-Z]{2})\b/);
-  if(mLogr){
-    const compl=mCompl&&!/\*{2,}|N\/?A|NAO CONSTA/i.test(mCompl[1])?", "+limpa(mCompl[1]):"";
-    d.endereco=limpa(mLogr[1])+(mNum?", nº "+limpa(mNum[1]):"")+compl+(mBairro?", "+limpa(mBairro[1]):"");
+  /* cartão CNPJ da Receita: extração rotulada, campo a campo, já em prosa */
+  const rfb=extraiCartaoRFB(flat);
+  if(rfb){
+    if(rfb.razao) d.razao=limpa(rfb.razao);
+    if(rfb.logradouro){
+      let num="";
+      if(rfb.numero){
+        if(/^S\/?N\b/i.test(rfb.numero)) num="s/nº";
+        else if(!/NAO CONSTA|N[ÃA]O CONSTA/i.test(rfb.numero)) num="nº "+limpa(rfb.numero);
+      }
+      const compl=(rfb.complemento&&!/NAO CONSTA|N[ÃA]O CONSTA|^N\/?A$/i.test(rfb.complemento))?tituloCase(rfb.complemento):"";
+      d.endereco=junta([prosaLogradouro(rfb.logradouro),num,compl,rfb.bairro?prosaBairro(rfb.bairro):""]);
+    }
+    if(rfb.municipio) d.cidade=tituloCase(rfb.municipio)+(rfb.uf?"/"+limpa(rfb.uf).toUpperCase().slice(0,2):"");
+    if(rfb.cep){ const cc=fmtCEP(rfb.cep); if(/^\d{5}-\d{3}$/.test(cc)) d.ceps=[cc].concat(d.ceps.filter(x=>x!==cc)); }
   }
-  if(mMun) d.cidade=limpa(mMun[1])+(mUF?"/"+mUF[1]:"");
 
   /* razão social por sufixo societário (contratos), se o cartão não deu */
   if(!d.razao){
